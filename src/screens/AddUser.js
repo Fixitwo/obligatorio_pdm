@@ -11,7 +11,7 @@ import {
 
 import MyInputText from "../components/MyInputText";
 import MySingleButton from "../components/MySingleButton";
-import DatabaseConnection from "../database/db-connection";
+import DatabaseConnection from "../dataBase/db-conection";
 import { useNavigation } from "@react-navigation/native";
 const db = DatabaseConnection.getConnection();
 
