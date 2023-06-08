@@ -4,15 +4,15 @@ import MyButton from "../components/MyButton";
 import DatabaseConnection from "../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
-const HomeScreen = ({ navigation }) => {
+const ABMUsuarios = ({ navigation }) => {
 
   const dropDb = (tx) => {
-    tx.executeSql('DROP TABLE IF EXISTS users', []);
+    tx.executeSql('DROP TABLE IF EXISTS usuarios', []);
   }
 
   const createDb = (tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, userName VARCHAR(60), password VARCHAR(20), email VARCHAR(40))',
+      'CREATE TABLE IF NOT EXISTS usuarios (idUsuario INTEGER PRIMARY KEY AUTOINCREMENT, nombreUsuario VARCHAR(60), apellidoUsuario VARCHAR(60), ciUsuario numeric(8))',
       []
     );
   }
@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     db.transaction((txn) => {
       txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='users'", [],
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'", [],
         (_, results) => {
           if(results.rows.length == 0){
             dropDb(txn);
@@ -43,17 +43,38 @@ const HomeScreen = ({ navigation }) => {
           <ScrollView>
             <View>
               <MyButton
-                title="ABM Usuarios"
+                title="Alta de Usuario"
                 btnColor="green"
                 btnIcon="user-plus"
-                onPress={() => navigation.navigate("ABMUsers")}
+                onPress={() => navigation.navigate("AltaUsuario")}
               />
 
               <MyButton
-                title="ABM Zonas"
+                title="Modificar Usuario"
                 btnColor="orange"
                 btnIcon="user-circle"
-                onPress={() => navigation.navigate("ABMZonas")}
+                onPress={() => navigation.navigate("ModificarUsuario")}
+              />
+
+              <MyButton
+                title="Baja de Usuario"
+                btnColor="red"
+                btnIcon="user-times"
+                onPress={() => navigation.navigate("BajaUsuario")}
+              />
+
+              <MyButton
+                title="Ver Usuario"
+                btnColor="blue"
+                btnIcon="user-circle-o"
+                onPress={() => navigation.navigate("VerUsuario")}
+              />
+
+              <MyButton
+                title="Ver todos los Usuarios"
+                btnColor="purple"
+                btnIcon="users"
+                onPress={() => navigation.navigate("VerTodosLosUsuarios")}
               />
             </View>
           </ScrollView>
@@ -90,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default ABMUsuarios;

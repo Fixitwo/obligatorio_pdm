@@ -4,15 +4,15 @@ import MyButton from "../components/MyButton";
 import DatabaseConnection from "../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
-const HomeScreen = ({ navigation }) => {
+const ABMZonas = ({ navigation }) => {
 
   const dropDb = (tx) => {
-    tx.executeSql('DROP TABLE IF EXISTS users', []);
+    tx.executeSql('DROP TABLE IF EXISTS Zonas', []);
   }
 
   const createDb = (tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, userName VARCHAR(60), password VARCHAR(20), email VARCHAR(40))',
+      "CREATE TABLE IF NOT EXISTS Zonas (idZona INTEGER PRIMARY KEY AUTOINCREMENT, lugar VARCHAR(11) check(lugar in ('Estancia', 'Quinta', 'Plantación')), departamento VARCHAR(30) check(departamento in ('Colonia', 'San José', 'Soriano', 'Canelones', 'Montevideo', 'Río Negro','Payandú','Salto','Artigas','Rivera','Tacuarembó','Durazno','Flores','Florida','Cerro Largo','Lavalleja','Maldonado','Rocha','Treinta y Tres')), numTrabajadores integer",
       []
     );
   }
@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     db.transaction((txn) => {
       txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='users'", [],
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='Zonas'", [],
         (_, results) => {
           if(results.rows.length == 0){
             dropDb(txn);
@@ -43,17 +43,38 @@ const HomeScreen = ({ navigation }) => {
           <ScrollView>
             <View>
               <MyButton
-                title="ABM Usuarios"
+                title="Alta de Zona"
                 btnColor="green"
                 btnIcon="user-plus"
-                onPress={() => navigation.navigate("ABMUsers")}
+                onPress={() => navigation.navigate("AltaZona")}
               />
 
               <MyButton
-                title="ABM Zonas"
+                title="Modificar Zona"
                 btnColor="orange"
                 btnIcon="user-circle"
-                onPress={() => navigation.navigate("ABMZonas")}
+                onPress={() => navigation.navigate("ModificarZona")}
+              />
+
+              <MyButton
+                title="Baja de Zona"
+                btnColor="red"
+                btnIcon="user-times"
+                onPress={() => navigation.navigate("BajaZona")}
+              />
+
+              <MyButton
+                title="Ver Zona"
+                btnColor="blue"
+                btnIcon="user-circle-o"
+                onPress={() => navigation.navigate("VerZona")}
+              />
+
+              <MyButton
+                title="Ver todas las Zonas"
+                btnColor="purple"
+                btnIcon="users"
+                onPress={() => navigation.navigate("VerTodasLasZonas")}
               />
             </View>
           </ScrollView>
@@ -90,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default ABMZonas;

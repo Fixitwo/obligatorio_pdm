@@ -4,12 +4,13 @@ import { NavigationContainer } from "@react-navigation/native";
 const Stack = createStackNavigator();
 // TODO Importar cada una de las pantallas
 import HomeScreen from "../screens/HomeScreen";
-import AddUser from "../screens/AddUser";
-import EditUser from "../screens/EditUser";
-import DeleteUser from "../screens/DeleteUser";
-import ViewUser from "../screens/ViewUser";
-import ViewAllUsers from "../screens/ViewAllUsers";
-
+import AddUser from "../screens/Usuarios/AltaUsuario";
+import ModificarUsuario from "../screens/Usuarios/ModificarUsuario";
+import BajaUsuario from "../screens/Usuarios/BajaUsuario";
+import VerUsuario from "../screens/Usuarios/VerUsuario";
+import VerTodosLosUsuarios from "../screens/Usuarios/VerTodosLosUsuarios";
+import ABMUsuarios from "../screens/ABMUsuarios";
+import ABMZonas from "../screens/ABMZonas";
 const Navigation = () => {
   return (
     <NavigationContainer>
@@ -21,7 +22,7 @@ const Navigation = () => {
           options={{
             headerTitle: "Principal",
             headerStyle: {
-              backgroundColor: "#f4511e",
+              backgroundColor: "#E34038",
             },
             headerTintColor: "#fff",
             headerTitleStyle: {
@@ -29,12 +30,25 @@ const Navigation = () => {
             },
           }}
         />
-
         <Stack.Screen
-          name="RegisterUser"
-          component={AddUser}
+          name="ABMZonas"
+          component={ABMZonas}
           options={{
-            title: "Registrar Usuario",
+            headerTitle: "Principal",
+            headerStyle: {
+              backgroundColor: "#E34038",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="ABMUsers"
+          component={ABMUsuarios}
+          options={{
+            title: "ABM Usuarios",
             headerStyle: {
               backgroundColor: "#f4511e",
             },
@@ -46,8 +60,23 @@ const Navigation = () => {
         />
 
         <Stack.Screen
-          name="EditUser"
-          component={EditUser}
+          name="AltaUsuario"
+          component={AddUser}
+          options={{
+            title: "Alta de Usuario",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="ModificarUsuario"
+          component={ModificarUsuario}
           options={{
             title: "Modificar Usuario",
             headerStyle: {
@@ -61,10 +90,10 @@ const Navigation = () => {
         />
 
         <Stack.Screen 
-          name="DeleteUser" 
-          component={DeleteUser}
+          name="BajaUsuario" 
+          component={BajaUsuario}
           options={{
-            title: "Borrar Usuario",
+            title: "Baja de Usuario",
             headerStyle: {
               backgroundColor: "#f4511e",
             },
@@ -76,8 +105,8 @@ const Navigation = () => {
         />
 
         <Stack.Screen 
-          name="ViewUser" 
-          component={ViewUser} 
+          name="VerUsuario" 
+          component={VerUsuario} 
           options={{
             title: "Ver Usuario",
             headerStyle: {
@@ -91,10 +120,10 @@ const Navigation = () => {
         />
 
         <Stack.Screen 
-          name="ViewAllUsers" 
-          component={ViewAllUsers} 
+          name="VerTodosLosUsuarios" 
+          component={VerTodosLosUsuarios} 
           options={{
-            title: "Ver todos los Usuario",
+            title: "Ver todos los Usuarios",
             headerStyle: {
               backgroundColor: "#f4511e",
             },

@@ -9,33 +9,33 @@ import {
   Alert,
 } from "react-native";
 
-import MyInputText from "../components/MyInputText";
-import MySingleButton from "../components/MySingleButton";
-import DatabaseConnection from "../dataBase/db-conection";
+import MyInputText from "../../components/MyInputText";
+import MySingleButton from "../../components/MySingleButton";
+import DatabaseConnection from "../../database/db-connection";
 import { useNavigation } from "@react-navigation/native";
 const db = DatabaseConnection.getConnection();
 
 const AddUser = () => {
-    // estados para los campos del formulario
-    const [userName, setUserName]= useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  // estados para los campos del formulario
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    // metodo para setear los estados
-    const handleUserName = (userName) => {
-      setUserName(userName);
-    }
-    const handlePassword = (password) => {
-        setPassword(password);
-    }
-    
-    const handleEmail = (email) => {
-        setEmail(email);
-    }
+  // metodo para setear los estados
+  const handleUserName = (userName) => {
+    setUserName(userName);
+  }
 
-    // metodo guarde el formulario
+  const handlePassword = (password) => {
+    setPassword(password);
+  }
+
+  const handleEmail = (email) => {
+    setEmail(email);
+  }
+  // metodo guarde el formulario
   const addUser = () => {
     // llamar a la validacion de datos
     // si la validacion es correcta
@@ -68,7 +68,9 @@ const AddUser = () => {
         )
       });
     }
-    // metodo validar datos
+  }
+
+  // metodo validar datos
   const validateData = () => {
     if(userName === "" && !userName.trim()){
       Alert.alert("Error", "El nombre de usuario es obligatorio");
@@ -93,8 +95,8 @@ const AddUser = () => {
     return true;
   }
 
-   //  clear de los datos
-   const clearData = () => {
+  //  clear de los datos
+  const clearData = () => {
     setUserName("");
     setPassword("");
     setEmail("");
@@ -144,7 +146,7 @@ const AddUser = () => {
     </SafeAreaView>
   );
 };
-};
+
 export default AddUser;
 
 const styles = StyleSheet.create({
@@ -152,6 +154,3 @@ const styles = StyleSheet.create({
   inputUser:{},
   inputPassword:{}
 });
-
-
-
