@@ -4,13 +4,17 @@ import { NavigationContainer } from "@react-navigation/native";
 const Stack = createStackNavigator();
 // TODO Importar cada una de las pantallas
 import HomeScreen from "../screens/HomeScreen";
+import ABMUsuarios from "../screens/ABMUsuarios";
 import AddUser from "../screens/Usuarios/AltaUsuario";
 import ModificarUsuario from "../screens/Usuarios/ModificarUsuario";
 import BajaUsuario from "../screens/Usuarios/BajaUsuario";
 import VerUsuario from "../screens/Usuarios/VerUsuario";
 import VerTodosLosUsuarios from "../screens/Usuarios/VerTodosLosUsuarios";
-import ABMUsuarios from "../screens/ABMUsuarios";
 import ABMZonas from "../screens/ABMZonas";
+import AddZone from "../screens/Zonas/AltaZona";
+import ModificarZona from "../screens/Zonas/ModificarZona";
+import BajaZona from "../screens/Zonas/BajaZona";
+import VerZona from "../screens/Zonas/VerZona";
 const Navigation = () => {
   return (
     <NavigationContainer>
@@ -49,7 +53,7 @@ const Navigation = () => {
           component={ABMUsuarios}
           options={{
             title: "ABM Usuarios",
-            headerStyle: {
+            hearrStyle: {
               backgroundColor: "#f4511e",
             },
             headerTintColor: "#fff",
@@ -124,6 +128,62 @@ const Navigation = () => {
           component={VerTodosLosUsuarios} 
           options={{
             title: "Ver todos los Usuarios",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="AltaZona"
+          component={AddZone}
+          options={{
+            title: "Alta de zonas",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen 
+          name="BajaZona" 
+          component={BajaZona}
+          options={{
+            title: "Baja de Zona",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }} 
+        />
+        <Stack.Screen
+          name="ModificarZona"
+          component={ModificarZona}
+          options={{
+            title: "Modificar Zona",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen 
+          name="VerZona" 
+          component={VerZona} 
+          options={{
+            title: "Ver Zona",
             headerStyle: {
               backgroundColor: "#f4511e",
             },
