@@ -11,10 +11,12 @@ import BajaUsuario from "../screens/Usuarios/BajaUsuario";
 import VerUsuario from "../screens/Usuarios/VerUsuario";
 import VerTodosLosUsuarios from "../screens/Usuarios/VerTodosLosUsuarios";
 import ABMZonas from "../screens/ABMZonas";
-import AddZone from "../screens/Zonas/AltaZona";
+import AddZona from "../screens/Zonas/AltaZona";
 import ModificarZona from "../screens/Zonas/ModificarZona";
 import BajaZona from "../screens/Zonas/BajaZona";
 import VerZona from "../screens/Zonas/VerZona";
+import AddZona from "../screens/Zonas/AltaZona";
+import VerTodasLasZonas from "../screens/Zonas/VerTodasLasZonas";
 const Navigation = () => {
   return (
     <NavigationContainer>
@@ -139,7 +141,7 @@ const Navigation = () => {
         />
         <Stack.Screen
           name="AltaZona"
-          component={AddZone}
+          component={AddZona}
           options={{
             title: "Alta de zonas",
             headerStyle: {
@@ -184,6 +186,21 @@ const Navigation = () => {
           component={VerZona} 
           options={{
             title: "Ver Zona",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+
+<Stack.Screen 
+          name="VerTodaslaszonas" 
+          component={VerTodasLasZonas} 
+          options={{
+            title: "Ver todos las zonas",
             headerStyle: {
               backgroundColor: "#f4511e",
             },

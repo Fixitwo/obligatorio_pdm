@@ -8,24 +8,24 @@ import MySingleButton from '../../components/MySingleButton';
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
-const DeleteZone = () => {
-  const [site, setSite] = useState("");
+const DeleteZona = () => {
+  const [lugar, setLugar] = useState("");
   const navigation = useNavigation();
 
-  const deleteZone = () => {
-    if(!site && !site.length && site === ""){
-      Alert.alert("Error", "El lugar es obligatorio");
+  const DeleteZona = () => {
+    if(!lugar && !lugar.length && lugar === ""){
+      Alert.alert("Error", "El nombre de lugar es obligatorio");
       return false;
     }
 
     db.transaction((tx) => {
       tx.executeSql(
-        'DELETE FROM users WHERE site = site = ?',
-        [site],
+        'DELETE FROM users WHERE lugar = ?',
+        [lugar],
         (tx, results) => {
           console.log("Results", results.rowsAffected);
           if(results.rowsAffected > 0){
-            Alert.alert("Exito", "Lugar borrado correctamente", [
+            Alert.alert("Exito", "El lugar fue borrado correctamente", [
               {
                 text: "Ok",
                 onPress: () => navigation.navigate("HomeScreen"),
@@ -36,7 +36,7 @@ const DeleteZone = () => {
             }
             );
           } else {
-            Alert.alert("Error", "El lugsr no existe", [
+            Alert.alert("Error", "El lugar no existe", [
               {
                 text: "Ok",
                 onPress: () => navigation.navigate("HomeScreen"),
@@ -53,8 +53,8 @@ const DeleteZone = () => {
 
   }
 
-  const handleSite = (site) => {
-    setSite(site);
+  const handleLugar = (lugar) => {
+    setLugar(lugar);
   }
 
   return (
@@ -62,17 +62,17 @@ const DeleteZone = () => {
       <View style={styles.viewContainer}>
         <View style={styles.generalView}>
           <ScrollView>
-            <MyText textValue="Busqueda de Lugar" textStyle={styles.textStyle}/>
+            <MyText textValue="Busqueda de Zona" textStyle={styles.textStyle}/>
             <KeyboardAvoidingView>
               <MyInputText
-                placeholder="Lugar"
-                onChangeText={handleSite}
-                value={site}
+                placeholder="Nombre de lugar"
+                onChangeText={handleLugar}
+                value={lugar}
                 styles={styles.inputStyle}
               />
               <MySingleButton
                 title="Borrar"
-                onPress={deleteZone}
+                onPress={DeleteZona}
               />
             </KeyboardAvoidingView>
           </ScrollView>
@@ -82,7 +82,7 @@ const DeleteZone = () => {
   )
 }
 
-export default DeleteZone
+export default DeleteZona
 
 const styles = StyleSheet.create({
   container: {

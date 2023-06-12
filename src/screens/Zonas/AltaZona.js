@@ -15,168 +15,171 @@ import DatabaseConnection from "../../database/db-connection";
 import { useNavigation } from "@react-navigation/native";
 const db = DatabaseConnection.getConnection();
 
-const AddZone = () => {
-    // estados para los campos del formulario
-    const [site, setSite] = useState("");
-    const [departament, setDepartament] = useState("");
-    const [workers, setWorkers] = useState("");
-    const [latitude, setLatitude] = useState("");
-    const [longitude, setLongitude] = useState("");
-  
-    const navigation = useNavigation();
-  
-    // metodo para setear los estados
-    const handleSite = (site) => {
-      setSite(site);
-    }
-  
-    const handleDepartament = (departament) => {
-      setDepartament(departament);
-    }
+const AddZona = () => {
+  // estados para los campos del formulario
+  const [lugar, setLugar] = useState("");
+  const [departamento, setDepartamento] = useState("");
+  const [trabajador, setTrabajador] = useState("");
+  const [longitud, setLongitud] = useState("");
+  const [latitud, setLatitud] = useState("");
 
-    const handleWorkers = (workers) => {
-        setWorkers(workers);
-      }
-  
-    const handleLatitude = (latitude) => {
-      setLatitude(latitude);
-    }
-    const handleLongitude = (longitude) => {
-        setLongitude(longitude);
-    }
-    
-    // metodo guarde el formulario
-    const AddZone = () => {
-      // llamar a la validacion de datos
-      // si la validacion es correcta
-      // llamar al metodo de guardar
-      console.log("### add zone ###");
-  
-      if(validateData()){
-        console.log("### save zone ###");
-        // llamar a la db y guarar los datos
-        db.transaction((tx) => {
-          tx.executeSql(
-            'INSERT INTO sites (site, departament, workers, latitude, longitude) VALUES (?, ?, ?)',
-            [site, departament,workers, longitude, latitude],
-            (tx, results) => {
-              if(results.rowsAffected > 0){
-                Alert.alert("Exito", "La zona se ah registrado correctamente", [
-                  {
-                    text: "Ok",
-                    onPress: () => navigation.navigate("HomeScreen"),
-                  }
-                ],
+  const navigation = useNavigation();
+
+  // metodo para setear los estados
+  const handleLugar = (lugar) => {
+    setLugar(lugar);
+  }
+
+  const handleDepartamento = (departamento) => {
+    setDepartamento(departamento);
+  }
+
+  const handleTrabajador = (trabajador) => {
+    setTranajador(trabajador);
+  }
+
+  const handleLongitud = (longitud) => {
+    setLongitud(longitud);
+  }
+
+  const handleLatitud = (latitud) => {
+    setLatitud(latitud);
+  }
+  // metodo guarde el formulario
+  const AddZona = () => {
+    // llamar a la validacion de datos
+    // si la validacion es correcta
+    // llamar al metodo de guardar
+    console.log("### add user ###");
+
+    if(validateData()){
+      console.log("### save user ###");
+      // llamar a la db y guarar los datos
+      db.transaction((tx) => {
+        tx.executeSql(
+          'INSERT INTO zonas (lugar, departamento, trabajador, longitud, latitud) VALUES (?, ?, ?)',
+          [lugar , departamento, trabajador, longitud, latitud],
+          (tx, results) => {
+            if(results.rowsAffected > 0){
+              Alert.alert("Exito", "Zona registrado correctamente", [
                 {
-                  cancelable: false
-                } );
-                clearData();
-              }else{
-                Alert.alert("Error", "Error la zona no se ah registrado correctamente");
-              }
+                  text: "Ok",
+                  onPress: () => navigation.navigate("HomeScreen"),
+                }
+              ],
+              {
+                cancelable: false
+              } );
+              clearData();
+            }else{
+              Alert.alert("Error", "Error al registrar la zona");
             }
-          )
-        });
-      }
+          }
+        )
+      });
     }
-  
-    // metodo validar datos
-    const validateData = () => {
-      if(site === "" && !site.trim()){
-        Alert.alert("Error", "El lugar es obligatorio");
-        return false;
-      }
-  
-      if(departament === "" && !departament.trim()){
-        Alert.alert("Error", "El departamento es obligatoria");
-        return false;
-      }
-  
-      if(!workers.trim()){
-        Alert.alert("Error", "El numero de trabajadores es obligatorio");
-        return false;
-      }
+  }
 
-      if(!latitude.trim()){
-        Alert.alert("Error", "La latitud es obligatoria");
-        return false;
-      }
+  // metodo validar datos
+  const validateData = () => {
+    if(lugar === "" && !lugar.trim()){
+      Alert.alert("Error", "El lugar es obligatorio");
+      return false;
+    }
 
-      if(!longitude.trim()){
-        Alert.alert("Error", "La longitud es obligatoria");
-        return false;
-      }
-      return true;
+    if(departamento === "" && !departamento.trim()){
+      Alert.alert("Error", "El departamento es obligatorio");
+      return false;
     }
-  
-    //  clear de los datos
-    const clearData = () => {
-      setSite("");
-      setDepartament("");
-      setWorkers("");
-      setLatitude("");
-      setLongitude("");
+
+    if(trabajador === "" && !trabajador.trim()){
+      Alert.alert("Error", "El N° de trabajadores es obligatorio");
+      return false;
     }
-    // Formulario de registro de Zona
-    return (
-      <SafeAreaView>
+
+    if(longitud === "" && !longitud.trim()){
+      Alert.alert("Error", "La longitud es obligatorio");
+      return false;
+    }
+
+    if(latitud === "" && !latitud.trim()){
+      Alert.alert("Error", "La latitud es obligatorio");
+      return false;
+    }
+    return true;
+  }
+
+  //  clear de los datos
+  const clearData = () => {
+    setLugar("");
+    setDepartamento("");
+    setTrabajador("");
+    setLongitud("");
+    setLatitud("");
+  }
+  // Formulario de registro de usuario
+  return (
+    <SafeAreaView>
+      <View>
         <View>
-          <View>
-            <ScrollView>
-              <KeyboardAvoidingView>
-                <MyInputText 
-                  styles={styles.inputSite}
-                  placeholder="Nombre de Lugar"
-                  onChangeText={handleSite}
-                  value={site}
-                  />
-  
-                <MyInputText
-                  styles={styles.inputSite}
-                  placeholder="Departamento"
-                  onChangeText={handleDepartament}
-                  value={departament}
+          <ScrollView>
+            <KeyboardAvoidingView>
+              <MyInputText 
+                styles={styles.inputLugar}
+                placeholder="Nombre de Lugar"
+                onChangeText={handleLugar}
+                value={lugar}
                 />
-  
-                <MyInputText
-                  styles={styles.inputWorkers}
-                  placeholder="N° Trabajadores"
-                  onChangeText={handleWorkers}
-                  value={workers}
+
+              <MyInputText 
+                styles={styles.inputDepartamento}
+                placeholder="Nombre del Departamento"
+                onChangeText={handleDepartamento}
+                value={departamento}
                 />
-                <MyInputText
-                  styles={styles.inputLatitude}
-                  placeholder="Latitud"
-                  onChangeText={handleLatitude}
-                  value={latitude}
-                />
-                <MyInputText
-                  styles={styles.inputLongitude}
-                  placeholder="Longitud"
-                  onChangeText={handleLongitude}
-                  value={longitude}
-                />
-                <MySingleButton
-                  title="Registrar Zona"
-                  btnColor="green"
-                  onPress={AddZone}
-                />
-  
-              </KeyboardAvoidingView>
-            </ScrollView>
-          </View>
+
+              <MyInputText
+                styles={styles.inputTrabajador}
+                placeholder="N° trabajadores"
+                onChangeText={handleTrabajador}
+                value={trabajador}
+              />
+
+              <MyInputText
+                styles={styles.inputLongitud}
+                placeholder="Longituid"
+                onChangeText={handleLongitud}
+                value={longitud}
+              />
+
+              <MyInputText
+                styles={styles.inputLatitud}
+                placeholder="Latitud"
+                onChangeText={handleLatitud}
+                value={latitud}
+              />
+
+              <MySingleButton
+                title="Registrar Zona"
+                btnColor="green"
+                onPress={AddZona}
+              />
+
+            </KeyboardAvoidingView>
+          </ScrollView>
         </View>
-      </SafeAreaView>
-    );
-  };
-  
-  export default AddZone;
-  
-  const styles = StyleSheet.create({
-    container: {},
-    inputSite:{},
-    inputDepartament:{},
-    inputWorkers:{},
-    inputLatitude:{},
-    inputLongitude:{}
-  });
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default AddZona;
+
+const styles = StyleSheet.create({
+  container: {},
+  inputLugar:{},
+  inputDepartamento:{},
+  inputTrabajador:{},
+  inputLongitud:{},
+  inputLatitud:{}
+});

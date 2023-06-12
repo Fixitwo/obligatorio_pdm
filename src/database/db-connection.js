@@ -20,12 +20,13 @@ const DatabaseConnection = {
             )
         });
     },    
-    inserZone: (site, departament, workers,latitude,longitude) => {
+
+    inserZona: (lugar, departamento, trabajador, longitud, latitud) => {
         const db = getConnection();
         db.transaction((tx) => {
             tx.executeSql(
-                'INSERT INTO sites (site, departament, workers, latitude, longitude) VALUES (?, ?, ?)',
-                [site, departament, workers, latitude, longitude],
+                'INSERT INTO zonas (lugar, departamento, trabajador, longitud, latitud) VALUES (?, ?, ?)',
+                [lugar, departamento, trabajador, longitud, latitud],
                 (tx, results) => {
                     if(results.rowsAffected > 0){
                         return results.rowsAffected;
@@ -34,7 +35,8 @@ const DatabaseConnection = {
                 }
             )
         });
-    }    
+    },    
+       
 }
 
 export default DatabaseConnection;

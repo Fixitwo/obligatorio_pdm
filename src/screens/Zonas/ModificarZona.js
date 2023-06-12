@@ -15,91 +15,93 @@ import DatabaseConnection from "../../database/db-connection";
 
 const db = DatabaseConnection.getConnection();
 
-const EditSite = () => {
+const EditZona = () => {
   // estados
-  const [siteSearch, setSiteSearch] = useState("");
-  const [site, setSite] = useState("");
-  const [departament, setDepartament] = useState("");
-  const [workers, setWorkers] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
+  const [lugarSearch, setLugarSearch] = useState("");
+  const [lugar, setLugar] = useState("");
+  const [departamento, setDepartamento] = useState("");
+  const [trabajador, setTrabajador] = useState("");
+  const [longitud, setLongitud] = useState("");
+  const [latitud, setLatitud] = useState("");
   const navigation = useNavigation();
 
   // metodo para setear los estados
-  const handleSiteSearch = (site) => {
-    console.log("### handleSiteSearch ###", site);
-    setSiteSearch(site);
+  const handleLugarSearch = (Lugar) => {
+    console.log("### handleLugarSearch ###", Lugar);
+    setLugarSearch(Lugar);
   };
 
-  const handleSite = (site) => {
-    setSite(site);
+  const handleLugar = (lugar) => {
+    setLugar(lugar);
   };
 
-  const handleDepartament = (departament) => {
-    setDepartament(departament);
+  const handleDepartamento = (departamento) => {
+    setDepartamento(departamento);
   };
 
-  const handleWorkers = (workers) => {
-    setWorkers(workers);
+  const handleTrabajador = (trabajador) => {
+    setTrabajador(trabajador);
   };
-  const handleLatitude = (latitude) => {
-    setWorkers(latitude);
+
+  const handlelongitud = (longitud) => {
+    setLongitud(longitud);
   };
-  const handleLongitude = (longitude) => {
-    setWorkers(longitude);
+
+  const handleLatitud = (latitud) => {
+    setLatitud(latitud);
   };
   // metodo validar datos
   const validateData = () => {
-    if (!site && !site.length && site === "" && !site.trim()) {
-      Alert.alert("Error", "El lugar es obligatorio");
+    if (!lugar && !lugar.length && lugar === "" && !lugar.trim()) {
+      Alert.alert("Error", "El nombre del lugar es obligatorio");
       return false;
     }
 
-    if (!departament && !departament.length && departament === "" && !departament.trim()) {
+    if (!departamento && !departamento.length && departamento === "" && !departamento.trim()) {
       Alert.alert("Error", "El departamento es obligatoria");
       return false;
     }
 
-    if (!workers && !workers.length && !workers.trim()) {
+    if (!trabajador && !trabajador.length && !trabajador.trim()) {
       Alert.alert("Error", "El N° de trabajadores es obligatorio");
       return false;
     }
 
-    if (!latitude && !latitude.length && !latitude.trim()) {
-        Alert.alert("Error", "La latitud es obligatoria");
+    if (!longitud && !longitud.length && !longitud.trim()) {
+        Alert.alert("Error", "La longitud es obligatorio");
         return false;
     }
-
-    if (!longitude && !longitude.length && !longitude.trim()) {
-        Alert.alert("Error", "La longitud es obligatoria");
+      
+    if (!trabajador && !trabajador.length && !trabajador.trim()) {
+        Alert.alert("Error", "La latitud es obligatorio");
         return false;
-    }
+      }
     return true;
   };
 
-  const clearSiteSearch = () => {
-    setSiteSearch("");
+  const clearZonaSearch = () => {
+    setLugarSearch("");
   }
 
   //  clear de los datos
   const clearData = () => {
-    setSite("");
-    setDepartament("");
-    setWorkers("");
-    setLatitude("");
-    setLongitude("");
+    setLugar("");
+    setDepartamento("");
+    setTrabajador("");
+    setLongitud("");
+    setLatitud("");
   };
 
-  const editSite = () => {
+  const editZona = () => {
     if (validateData()) {
       db.transaction((tx) => {
         tx.executeSql(
-          "UPDATE sites setSite=?, departament=?, workers=? WHERE site=?",
-          [site, departament, workers, latitude, longitude, SiteSearch],
+          "UPDATE zonas set lugar=?, departamento=?, trabajador=?, longitud=?, latitud=? WHERE lugar=?",
+          [lugar, departamento, trabajador, longitud, latitud, lugarSearch],
           (_, results) => {
             if (results.rowsAffected > 0) {
               clearData();
-              Alert.alert("Exito", "Lugar actualizado correctamente", [
+              Alert.alert("Exito", "Zona actualizada correctamente", [
                 {
                   text: "Ok",
                   onPress: () => navigation.navigate("HomeScreen"),
@@ -109,7 +111,7 @@ const EditSite = () => {
                 }
               ]);
             } else {
-              Alert.alert("Error", "Error al actualizar el lugar");
+              Alert.alert("Error", "Error al actualizar la zona");
             }
           }
         )
@@ -117,26 +119,26 @@ const EditSite = () => {
     }
   };
 
-  const searchSite = () => {
-    if(!siteSearch.trim() && siteSearch === ""){
-      Alert.alert("Error", "El lugar es requerido");
+  const searchLugar = () => {
+    if(!lugarSearch.trim() && lugarSearch === ""){
+      Alert.alert("Error", "El nombre del lugar es requerido");
       return;
     }
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM sites WHERE site = ?",
-        [siteSearch],
+        "SELECT * FROM zonas WHERE lugar = ?",
+        [lugarSearch],
         (_, results) => {
           if(results.rows.length > 0) {
-            const site = results.rows.item(0);
-            setSite(site.site);
-            setDepartament(site.departament);
-            setWorkers(site.workers);
-            setLatitude(site.latitude);
-            setLatitude(site.longitude);
+            const zona = results.rows.item(0);
+            setLugar(zona.lugar);
+            setDepartamento(zona.departamento);
+            setTrabajador(zona.trabajador);
+            setLongitud(zona.longitud);
+            setLatitud(zona.latitud);
           }else {
-            Alert.alert("Error", "Lugar no encontrado");
-            clearSiteSearch();
+            Alert.alert("Error", "Zona no encontrada");
+            clearZonaSearch();
           }
         }
       )
@@ -150,49 +152,49 @@ const EditSite = () => {
         <View style={styles.generalView}>
           <ScrollView>
             <KeyboardAvoidingView style={styles.keyboardView}>
-              <MyText textValue="Buscar lugar" textStyle={styles.textStyle} />
+              <MyText textValue="Buscar zona" textStyle={styles.textStyle} />
               <MyInputText
-                placeholder="Ingrese el lugar"
-                onChangeText={handleSiteSearch}
+                placeholder="Ingrese el nombre del lugar"
+                onChangeText={handleLugarSearch}
                 styles={styles.input}
-                value={siteSearch}
+                value={lugarSearch}
               />
               <MySingleButton 
                 title="Buscar" 
-                onPress={searchSite} 
+                onPress={searchLugar} 
                 btnColor='green'
               />
 
             <MyInputText 
-              placeholder="Lugar"
-              value={site}
-              onChangeText={handleSite}
+              placeholder="Nombre del lugar"
+              value={lugar}
+              onChangeText={handleLugar}
               />
 
             <MyInputText 
               placeholder="Departamento"
-              value={departament}
-              onChangeText={handleDepartament}
+              value={departamento}
+              onChangeText={handleDepartamento}
             />
 
             <MyInputText 
-              placeholder="Trabajadores"
-              value={workers}
-              onChangeText={handleWorkers}
+              placeholder="N° trabajadores"
+              value={trabajador}
+              onChangeText={handleTrabajador}
             />
             <MyInputText 
-              placeholder="Trabajadores"
-              value={workers}
-              onChangeText={handleLatitude}
+              placeholder="Longitud"
+              value={longitud}
+              onChangeText={handlelongitud}
             />
             <MyInputText 
-              placeholder="Trabajadores"
-              value={workers}
-              onChangeText={handleLongitude}
+              placeholder="Latitud"
+              value={latitud}
+              onChangeText={handleLatitud}
             />
 
             <MySingleButton 
-              title="Editar" onPress={() => editSite()} 
+              title="Editar" onPress={() => editZona()} 
               btnColor='orange'
               />
 
@@ -204,7 +206,7 @@ const EditSite = () => {
   );
 };
 
-export default EditSite;
+export default EditZona;
 
 const styles = StyleSheet.create({
   container: {

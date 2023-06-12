@@ -16,34 +16,34 @@ import { useNavigation } from "@react-navigation/native";
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
-const ViewSite = () => {
-  const [Site, setSite] = useState("");
-  const [site, setsite] = useState(null);
+const ViewZona = () => {
+  const [lugar, setLugar] = useState("");
+  const [zona, setZona] = useState(null);
   const navigation = useNavigation();
 
-  console.log("### user ###", site)
+  console.log("### zona ###", zona)
 
-  const handleSite = (site) => {
-    setSite(site);
+  const handleLugar = (Lugar) => {
+    setLugar(Lugar);
   };
 
-  const getSite = () => {
-    if(!Site && !Site.length && Site === ""){
-      Alert.alert("Error", "El lugar es obligatorio");
+  const getZona = () => {
+    if(!lugar && !lugar.length && lugar === ""){
+      Alert.alert("Error", "El nombre del lugar es obligatorio");
       return false;
     }
 
-    console.log("### Sitio ###", Site);
+    console.log("### Lugar ###", lugar);
 
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM sites WHERE Site=?",
-        [Site],
+        "SELECT * FROM zonas WHERE lugar=?",
+        [lugar],
         (tx, results) => {
           console.log("Results", results.rows);
           if(results.rows.length > 0){
-            console.log('seteo lugar')
-            setUser(results.rows._array[0]);
+            console.log('seteo zona')
+            setZona(results.rows._array[0]);
           } else {
             Alert.alert("Error", "El lugar no existe", [
               {
@@ -67,27 +67,33 @@ const ViewSite = () => {
         <View style={styles.generalView}>
           <ScrollView>
             <KeyboardAvoidingView>
-              <MyText text="Filtrar lugar" style={styles.text}/>
+              <MyText text="Filtrar zona" style={styles.text}/>
               <MyInputText
                 placeholder="Nombre de lugar"
-                onChangeText={handleSite}
+                onChangeText={handleLugar}
                 style={styles.input}
-                value={site}
+                value={lugar}
               />
-              <MySingleButton title="Buscar" onPress={getSite} />
+              <MySingleButton title="Buscar" onPress={getZona} />
 
               <View style={styles.presenterView}>
-                {site ? (
+                {zona ? (
                   <>
                     <MyText textValue="id" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={site.id.toString()} textStyle={styles.presenterText}/>
-                    <MyText textValue="Nombre de lugar" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={site.Site} textStyle={styles.presenterText}/>
+                    <MyText textValue={zona.id.toString()} textStyle={styles.presenterText}/>
+                    <MyText textValue="Nombre del lugar" textStyle={styles.presenterTextBold}/>
+                    <MyText textValue={zona.lugar} textStyle={styles.presenterText}/>
                     <MyText textValue="Departamento" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={site.departament} textStyle={styles.presenterText}/>
+                    <MyText textValue={zona.departamento} textStyle={styles.presenterText}/>
+                    <MyText textValue="Trabajador" textStyle={styles.presenterTextBold}/>
+                    <MyText textValue={zona.trabajador} textStyle={styles.presenterText}/>
+                    <MyText textValue="Longitud" textStyle={styles.presenterTextBold}/>
+                    <MyText textValue={zona.longitud} textStyle={styles.presenterText}/>
+                    <MyText textValue="Latitud" textStyle={styles.presenterTextBold}/>
+                    <MyText textValue={zona.latitud} textStyle={styles.presenterText}/>
                   </>
                 ) : (
-                  <Text style={styles.presenterText}>No hay usuario</Text>
+                  <Text style={styles.presenterText}>No hay zonas</Text>
                 )}
               </View>
             </KeyboardAvoidingView>
@@ -98,7 +104,7 @@ const ViewSite = () => {
   );
 };
 
-export default ViewSite;
+export default ViewZona;
 
 const styles = StyleSheet.create({
   container: {
