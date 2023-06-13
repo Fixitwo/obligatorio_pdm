@@ -19,7 +19,24 @@ const DatabaseConnection = {
                 }
             )
         });
-    }        
+    },    
+
+    inserZona: (lugar, departamento, trabajador, longitud, latitud) => {
+        const db = getConnection();
+        db.transaction((tx) => {
+            tx.executeSql(
+                'INSERT INTO zonas (lugar, departamento, trabajador, longitud, latitud) VALUES (?, ?, ?)',
+                [lugar, departamento, trabajador, longitud, latitud],
+                (tx, results) => {
+                    if(results.rowsAffected > 0){
+                        return results.rowsAffected;
+                    }
+                    return 0;
+                }
+            )
+        });
+    },    
+       
 }
 
 export default DatabaseConnection;
