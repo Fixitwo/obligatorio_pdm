@@ -39,7 +39,7 @@ const Navigation = () => {
           name="ABMZonas"
           component={ABMZonas}
           options={{
-            headerTitle: "Principal",
+            headerTitle: "ABM Zonas",
             headerStyle: {
               backgroundColor: "#E34038",
             },
@@ -54,7 +54,7 @@ const Navigation = () => {
           component={ABMUsuarios}
           options={{
             title: "ABM Usuarios",
-            hearrStyle: {
+            headerStyle: {
               backgroundColor: "#f4511e",
             },
             headerTintColor: "#fff",

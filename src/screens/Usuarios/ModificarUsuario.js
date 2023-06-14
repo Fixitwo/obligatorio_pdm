@@ -17,78 +17,76 @@ const db = DatabaseConnection.getConnection();
 
 const EditUser = () => {
   // estados
-  const [userNameSearch, setUserNameSearch] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [ciSearch, setCiSearch] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [ci, setCi] = useState("");
   const navigation = useNavigation();
 
   // metodo para setear los estados
-  const handleUserNameSearch = (username) => {
-    console.log("### handleUserNameSearch ###", username);
-    setUserNameSearch(username);
+  const handleCiSearch = (ciSearch) => {
+    console.log("### handleCISearch ###", ciSearch);
+    setCiSearch(ciSearch);
   };
 
-  const handleUserName = (userName) => {
-    setUserName(userName);
+  const handleNombre = (nombre) => {
+    setNombre(nombre);
   };
 
-  const handlePassword = (password) => {
-    setPassword(password);
+  const handleApellido = (apellido) => {
+    setApellido(apellido);
   };
 
-  const handleEmail = (email) => {
-    setEmail(email);
+  const handleCi = (ci) => {
+    setCi(ci);
   };
   // metodo validar datos
   const validateData = () => {
-    if (!userName && !userName.length && userName === "" && !userName.trim()) {
-      Alert.alert("Error", "El nombre de usuario es obligatorio");
+    if (!nombre && !nombre.length && nombre === "" && !nombre.trim()) {
+      Alert.alert("Error", "El nombre es obligatorio");
       return false;
     }
 
-    if (!password && !password.length && password === "" && !password.trim()) {
-      Alert.alert("Error", "La contraseña es obligatoria");
+    if (!apellido && !apellido.length && apellido === "" && !apellido.trim()) {
+      Alert.alert("Error", "El apellido es obligatorio");
       return false;
     }
 
-    if (!email && !email.length && !email.trim()) {
-      Alert.alert("Error", "El correo electronico es obligatorio");
+    if (!ci && !ci.length && !ci.trim()) {
+      Alert.alert("Error", "La cédula de identidad es obligatoria");
       return false;
     }
-
-    if (!email && !email.length && !email.includes("@")) {
-      Alert.alert("Error", "El correo electronico no es valido");
+    if (ci.length != 8) {
+      Alert.alert("Error", "La cédula de identidad debe tener 8 caracteres");
       return false;
     }
 
     return true;
   };
 
-  const clearUsernameSearch = () => {
-    setUserNameSearch("");
+  const clearCiSearch = () => {
+    setCiSearch("");
   }
 
   //  clear de los datos
   const clearData = () => {
-    setUserName("");
-    setPassword("");
-    setEmail("");
+    setNombre("");
+    setApellido("");
+    setCi("");
   };
 
   const editUser = () => {
     if (validateData()) {
       db.transaction((tx) => {
         tx.executeSql(
-          "UPDATE users set userName=?, password=?, email=? WHERE userName=?",
-          [userName, password, email, userNameSearch],
+          "UPDATE usuarios set nombreUsuario=?, ApellidoUsuario=?, ciUsuario=? WHERE ciUsuario=?",
+          [nombre, apellido, ci, ciSearch],
           (_, results) => {
             if (results.rowsAffected > 0) {
               clearData();
               Alert.alert("Exito", "Usuario actualizado correctamente", [
                 {
-                  text: "Ok",
-                  onPress: () => navigation.navigate("HomeScreen"),
+                  onPress: () => navigation.navigate("ABMUsers"),
                 },
                 {
                   cancelable: false,
@@ -104,23 +102,23 @@ const EditUser = () => {
   };
 
   const searchUser = () => {
-    if(!userNameSearch.trim() && userNameSearch === ""){
-      Alert.alert("Error", "El nombre de usuario es requerido");
+    if(!ciSearch.trim() && ciSearch === ""){
+      Alert.alert("Error", "La cédula de identidad es requerida");
       return;
     }
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM users WHERE userName = ?",
-        [userNameSearch],
+        "SELECT * FROM usuarios WHERE ciUsuario = ?",
+        [ciSearch],
         (_, results) => {
           if(results.rows.length > 0) {
             const user = results.rows.item(0);
-            setUserName(user.userName);
-            setPassword(user.password);
-            setEmail(user.email);
+            setNombre(user.nombreUsuario);
+            setApellido(user.apellidoUsuario);
+            setCi(user.ciUsuario);
           }else {
             Alert.alert("Error", "Usuario no encontrado");
-            clearUsernameSearch();
+            clearCiSearch();
           }
         }
       )
@@ -136,10 +134,11 @@ const EditUser = () => {
             <KeyboardAvoidingView style={styles.keyboardView}>
               <MyText textValue="Buscar usuario" textStyle={styles.textStyle} />
               <MyInputText
-                placeholder="Ingrese el nombre de usuario"
-                onChangeText={handleUserNameSearch}
+                placeholder="Ingrese la cédula de identitad"
+                onChangeText={handleCiSearch}
                 styles={styles.input}
-                value={userNameSearch}
+                keyboardType="numeric"
+                value={ciSearch}
               />
               <MySingleButton 
                 title="Buscar" 
@@ -148,21 +147,21 @@ const EditUser = () => {
               />
 
             <MyInputText 
-              placeholder="Nombre de usuario"
-              value={userName}
-              onChangeText={handleUserName}
+              placeholder="Nombre"
+              value={nombre}
+              onChangeText={handleNombre}
               />
 
             <MyInputText 
-              placeholder="Contraseña"
-              value={password}
-              onChangeText={handlePassword}
+              placeholder="Apellido"
+              value={apellido}
+              onChangeText={handleApellido}
             />
 
             <MyInputText 
-              placeholder="Correo electronico"
-              value={email}
-              onChangeText={handleEmail}
+              placeholder="Cédula de identidad"
+              value={ci.toString()}
+              onChangeText={handleCi}
             />
 
             <MySingleButton 

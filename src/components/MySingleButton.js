@@ -3,7 +3,7 @@ import React from "react";
 
 const MySingleButton = ({
   title = "My Button",
-  btnColor = "red",
+  btnColor = "#4BB33E",
   onPress = () => console.log("click"),
 }) => {
   return (
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
         color: 'white',
         padding: 10,
         marginTop: 10,
-        marginLeft: 35,
-        marginRight: 35,
+        marginLeft: 30,
+        marginRight: 30,
         borderRadius: 5,
     },
     text: {
