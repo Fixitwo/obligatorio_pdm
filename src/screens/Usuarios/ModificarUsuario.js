@@ -25,12 +25,12 @@ const EditUser = () => {
 
   // metodo para setear los estados
   const handleCiSearch = (ciSearch) => {
-    console.log("### handlenombreSearch ###", ciSearch);
+    console.log("### handleCISearch ###", ciSearch);
     setCiSearch(ciSearch);
   };
 
   const handleNombre = (nombre) => {
-    setnombre(nombre);
+    setNombre(nombre);
   };
 
   const handleApellido = (apellido) => {
@@ -72,7 +72,7 @@ const EditUser = () => {
   const clearData = () => {
     setNombre("");
     setApellido("");
-    setEmail("");
+    setCi("");
   };
 
   const editUser = () => {
@@ -86,7 +86,6 @@ const EditUser = () => {
               clearData();
               Alert.alert("Exito", "Usuario actualizado correctamente", [
                 {
-                  text: "Ok",
                   onPress: () => navigation.navigate("ABMUsers"),
                 },
                 {
@@ -138,6 +137,7 @@ const EditUser = () => {
                 placeholder="Ingrese la cédula de identitad"
                 onChangeText={handleCiSearch}
                 styles={styles.input}
+                keyboardType="numeric"
                 value={ciSearch}
               />
               <MySingleButton 
@@ -160,7 +160,7 @@ const EditUser = () => {
 
             <MyInputText 
               placeholder="Cédula de identidad"
-              value={ci}
+              value={ci.toString()}
               onChangeText={handleCi}
             />
 

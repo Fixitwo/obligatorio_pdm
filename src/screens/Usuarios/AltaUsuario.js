@@ -45,40 +45,24 @@ const AddUser = () => {
       // llamar a la db y guarar los datos
       db.transaction((tx) => {
         tx.executeSql(
-          "INSERT INTO usuarios(nombreUsuario, apellidoUsuario, ciUsuario) VALUES (?, ?, ?)",
+          'INSERT INTO usuarios(nombreUsuario, apellidoUsuario, ciUsuario) VALUES (?, ?, ?)'
           [name, lastName, cedula],
-          (results) => {
-            if (results.rowsAffected > 0) {
-              Alert.alert(
-                "Exito",
-                "Usuario registrado correctamente",
-                [
+          (tx,results) => {
+              if(results.rowsAffected > 0){
+                Alert.alert("Exito", "Usuario registrado correctamente", [
                   {
                     text: "Ok",
                     onPress: () => navigation.navigate("ABMUsers"),
-                  },
+                  }
                 ],
                 {
-                  cancelable: false,
-                }
-              );
-              clearData();
-            } else {
-              Alert.alert(
-                "Error",
-                "Error al ingresar usuario",
-                [
-                  {
-                    text: "Ok",
-                    onPress: () => navigation.navigate("ABMUsers"),
-                  },
-                ],
-                {
-                  cancelable: false,
-                }
-              );
+                  cancelable: false
+                } );
+                clearData();
+              }else{
+                Alert.alert("Error", "Error al registrar el usuario");
+              }
             }
-          }
         );
       });
     }
@@ -86,7 +70,7 @@ const AddUser = () => {
 
   // metodo validar datos
   const validateData = () => {
-    if (name === "" && name.trim()) {
+    if (name === "" && !name.trim()) {
       Alert.alert("Error", "El nombre del usuario es obligatorio");
       return false;
     }

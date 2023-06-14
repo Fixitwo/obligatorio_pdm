@@ -51,7 +51,7 @@ const ViewAllUsers = () => {
         <View>
           <FlatList
             data={users}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.idUsuario.toString()}
             renderItem={({ item }) => listItemView(item)}
             contentContainerStyle={{ paddingHorizontal: 15 }}
           />
