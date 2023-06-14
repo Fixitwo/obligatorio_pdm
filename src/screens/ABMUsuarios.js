@@ -12,7 +12,7 @@ const ABMUsuarios = ({ navigation }) => {
 
   const createDb = (tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS usuarios (idUsuario INTEGER PRIMARY KEY AUTOINCREMENT, nombreUsuario VARCHAR(60), apellidoUsuario VARCHAR(60), ciUsuario numeric(8))',
+      'CREATE TABLE IF NOT EXISTS usuarios (idUsuario INTEGER PRIMARY KEY AUTOINCREMENT, nombreUsuario VARCHAR(60) NOT NULL, apellidoUsuario VARCHAR(60) NOT NULL, ciUsuario numeric(8) NOT NULL UNIQUE)',
       []
     );
   }

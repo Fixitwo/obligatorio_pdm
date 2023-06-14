@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,90 +17,102 @@ const db = DatabaseConnection.getConnection();
 
 const AddUser = () => {
   // estados para los campos del formulario
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [cedula, setCedula] = useState("");
 
   const navigation = useNavigation();
 
   // metodo para setear los estados
-  const handleUserName = (userName) => {
-    setUserName(userName);
-  }
+  const handleName = (Name) => {
+    setName(Name);
+  };
 
-  const handlePassword = (password) => {
-    setPassword(password);
-  }
+  const handleLastName = (lastName) => {
+    setLastName(lastName);
+  };
 
-  const handleEmail = (email) => {
-    setEmail(email);
-  }
+  const handleCedula = (cedula) => {
+    setCedula(cedula);
+  };
   // metodo guarde el formulario
   const addUser = () => {
     // llamar a la validacion de datos
     // si la validacion es correcta
     // llamar al metodo de guardar
-    console.log("### add user ###");
-
-    if(validateData()){
+    if (validateData()) {
       console.log("### save user ###");
       // llamar a la db y guarar los datos
       db.transaction((tx) => {
         tx.executeSql(
-          'INSERT INTO users (userName, password, email) VALUES (?, ?, ?)',
-          [userName, password, email],
-          (tx, results) => {
-            if(results.rowsAffected > 0){
-              Alert.alert("Exito", "Usuario registrado correctamente", [
+          "INSERT INTO usuarios(nombreUsuario, apellidoUsuario, ciUsuario) VALUES (?, ?, ?)",
+          [name, lastName, cedula],
+          (results) => {
+            if (results.rowsAffected > 0) {
+              Alert.alert(
+                "Exito",
+                "Usuario registrado correctamente",
+                [
+                  {
+                    text: "Ok",
+                    onPress: () => navigation.navigate("ABMUsers"),
+                  },
+                ],
                 {
-                  text: "Ok",
-                  onPress: () => navigation.navigate("HomeScreen"),
+                  cancelable: false,
                 }
-              ],
-              {
-                cancelable: false
-              } );
+              );
               clearData();
-            }else{
-              Alert.alert("Error", "Error al registrar el usuario");
+            } else {
+              Alert.alert(
+                "Error",
+                "Error al ingresar usuario",
+                [
+                  {
+                    text: "Ok",
+                    onPress: () => navigation.navigate("ABMUsers"),
+                  },
+                ],
+                {
+                  cancelable: false,
+                }
+              );
             }
           }
-        )
+        );
       });
     }
-  }
+  };
 
   // metodo validar datos
   const validateData = () => {
-    if(userName === "" && !userName.trim()){
-      Alert.alert("Error", "El nombre de usuario es obligatorio");
+    if (name === "" && name.trim()) {
+      Alert.alert("Error", "El nombre del usuario es obligatorio");
       return false;
     }
 
-    if(password === "" && !password.trim()){
-      Alert.alert("Error", "La contraseña es obligatoria");
+    if (lastName === "" && !lastName.trim()) {
+      Alert.alert("Error", "El apellido es obligatorio");
+      return false;
+    }
+    if (!cedula.trim()) {
+      Alert.alert("Error", "La cédula de identidad es obligatoria");
+      return false;
+    }
+    if (cedula.length != 8) {
+      Alert.alert("Error", "La cédula de identidad debe tener 8 caracteres");
       return false;
     }
 
-    if(!email.trim()){
-      Alert.alert("Error", "El correo electronico es obligatorio");
-      return false;
-    }
-
-    if (!email.includes("@")) {
-      Alert.alert("Error", "El correo electronico no es valido");
-      return false;
-    }
-    
     return true;
-  }
+  };
 
   //  clear de los datos
   const clearData = () => {
-    setUserName("");
-    setPassword("");
-    setEmail("");
-  }
+    setName("");
+    setLastName("");
+    setCedula("");
+  };
   // Formulario de registro de usuario
   return (
     <SafeAreaView>
@@ -108,29 +120,26 @@ const AddUser = () => {
         <View>
           <ScrollView>
             <KeyboardAvoidingView>
-              <MyInputText 
-                styles={styles.inputUser}
-                placeholder="Nombre de usuario"
-                onChangeText={handleUserName}
-                value={userName}
-                />
-
               <MyInputText
-                styles={styles.inputPassword}
-                placeholder="Contraseña"
-                minLength={8}
-                maxLength={16}
-                secureTextEntry={true}
-                onChangeText={handlePassword}
-                value={password}
+                styles={styles.inputUser}
+                placeholder="Nombre"
+                onChangeText={handleName}
+                value={name}
               />
 
               <MyInputText
-                styles={styles.inputEmail}
-                placeholder="Coreo electronico"
-                keyboardType="email-address"
-                onChangeText={handleEmail}
-                value={email}
+                styles={styles.inputUser}
+                placeholder="Apellido"
+                onChangeText={handleLastName}
+                value={lastName}
+              />
+
+              <MyInputText
+                styles={styles.inputUser}
+                placeholder="Cédula de identidad"
+                keyboardType="numeric"
+                onChangeText={handleCedula}
+                value={cedula}
               />
 
               <MySingleButton
@@ -138,7 +147,6 @@ const AddUser = () => {
                 btnColor="green"
                 onPress={addUser}
               />
-
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
@@ -151,6 +159,6 @@ export default AddUser;
 
 const styles = StyleSheet.create({
   container: {},
-  inputUser:{},
-  inputPassword:{}
+  inputUser: {},
+  inputPassword: {},
 });
