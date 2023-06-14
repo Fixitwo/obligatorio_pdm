@@ -7,13 +7,13 @@ const db = DatabaseConnection.getConnection();
 const HomeScreen = ({ navigation }) => {
 
   const dropDb = (tx) => {
-    tx.executeSql('DROP TABLE IF EXISTS users', []);
+    tx.executeSql('DROP TABLE IF EXISTS usuarios', []);
     tx.executeSql('DROP TABLE IF EXISTS zonas', []);
   }
 
   const createDb = (tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, userName VARCHAR(60), password VARCHAR(20), email VARCHAR(40))',
+      'CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, nombreUsuario VARCHAR(60), apellidoUsuario VARCHAR(60), ciUsuario NUMERIC(8))',
       'CREATE TABLE IF NOT EXISTS zonas (id INTEGER PRIMARY KEY AUTOINCREMENT, lugar VARCHAR(60), departamento VARCHAR(20), trabajador INTEGER, longitud INTEGER, latitud INTEGER)',
       []
     );
@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     db.transaction((txn) => {
       txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='users'", [],
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'", [],
         "SELECT name FROM sqlite_master WHERE type='table' AND name='zonas'", [],
         (_, results) => {
           if(results.rows.length == 0){

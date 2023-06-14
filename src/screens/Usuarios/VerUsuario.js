@@ -17,28 +17,28 @@ import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
 const ViewUser = () => {
-  const [userName, setUserName] = useState("");
+  const [ciUsuario, setCiUsuario] = useState("");
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
 
   console.log("### user ###", user)
 
-  const handleUserName = (username) => {
-    setUserName(username);
+  const handleCiUsuario = (ciUsuario) => {
+    setCiUsuario(ciUsuario);
   };
 
   const getUser = () => {
-    if(!userName && !userName.length && userName === ""){
-      Alert.alert("Error", "El nombre de usuario es obligatorio");
+    if(!ciUsuario && !ciUsuario.length && ciUsuario === ""){
+      Alert.alert("Error", "Debe ingresar una cédula de identidad");
       return false;
     }
 
-    console.log("### userName ###", userName);
+    console.log("### ciUsuario ###", ciUsuario);
 
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM users WHERE userName=?",
-        [userName],
+        "SELECT * FROM usuarios WHERE ciUsuario=?",
+        [ciUsuario],
         (tx, results) => {
           console.log("Results", results.rows);
           if(results.rows.length > 0){
@@ -48,7 +48,7 @@ const ViewUser = () => {
             Alert.alert("Error", "El usuario no existe", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
+                onPress: () => navigation.navigate("ABMUsers"),
               }
             ],
             {
@@ -69,22 +69,21 @@ const ViewUser = () => {
             <KeyboardAvoidingView>
               <MyText text="Filtrar usuario" style={styles.text}/>
               <MyInputText
-                placeholder="Nombre de usuario"
-                onChangeText={handleUserName}
+                placeholder="Cédula de identidad"
+                onChangeText={handleCiUsuario}
                 style={styles.input}
-                value={userName}
+                value={ciUsuario}
+                keyboardType="numeric"
               />
               <MySingleButton title="Buscar" onPress={getUser} />
 
               <View style={styles.presenterView}>
                 {user ? (
                   <>
-                    <MyText textValue="id" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={user.id.toString()} textStyle={styles.presenterText}/>
-                    <MyText textValue="Nombre de usuario" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={user.userName} textStyle={styles.presenterText}/>
-                    <MyText textValue="Email" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={user.email} textStyle={styles.presenterText}/>
+                    <MyText textValue="Nombre" textStyle={styles.presenterTextBold}/>
+                    <MyText textValue={user.nombreUsuario + " " + user.apellidoUsuario} textStyle={styles.presenterText}/>
+                    <MyText textValue="Cédula de identidad" textStyle={styles.presenterTextBold}/>
+                    <MyText textValue={user.ciUsuario} textStyle={styles.presenterText}/>
                   </>
                 ) : (
                   <Text style={styles.presenterText}>No hay usuario</Text>
@@ -123,8 +122,7 @@ const styles = StyleSheet.create({
   },
   presenterView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+
     marginTop: 20,
     alignContent: "center",
     margin: 20,

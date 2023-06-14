@@ -12,18 +12,18 @@ const ViewAllUsers = () => {
   // useEffect para cargar los usuarios
   useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql(`SELECT * FROM users`, [], (tx, results) => {
+      tx.executeSql(`SELECT * FROM usuarios`, [], (tx, results) => {
         console.log("results", results);
         if (results.rows.length > 0) {
           setUsers(results.rows._array);
         } else {
           Alert.alert(
             "Mensaje",
-            "No hay usuarios!!!",
+            "No hay usuarios",
             [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
+                onPress: () => navigation.navigate("ABMUsers"),
               },
             ],
             { cancelable: false }
@@ -36,11 +36,11 @@ const ViewAllUsers = () => {
   const listItemView = (item) => {
     return (
       <View key={item.id} style={styles.listItemView}>
-        <MyText textValue="Nombre de Usuario" textStyle={styles.textStyle} />
-        <MyText textValue={item.userName} textStyle={styles.textStyle} />
+        <MyText textValue="Nombre" textStyle={styles.textStyle} />
+        <MyText textValue={item.nombreUsuario +" "+ item.apellidoUsuario} textStyle={styles.textStyle} />
 
-        <MyText textValue="Email" textStyle={styles.textStyle} />
-        <MyText textValue={item.email} textStyle={styles.textStyle} />
+        <MyText textValue="Cédula de identidad" textStyle={styles.textStyle} />
+        <MyText textValue={item.ciUsuario} textStyle={styles.textStyle} />
       </View>
     );
   };
@@ -51,7 +51,7 @@ const ViewAllUsers = () => {
         <View>
           <FlatList
             data={users}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.idUsuario.toString()}
             renderItem={({ item }) => listItemView(item)}
             contentContainerStyle={{ paddingHorizontal: 15 }}
           />

@@ -15,7 +15,6 @@ import AddZona from "../screens/Zonas/AltaZona";
 import ModificarZona from "../screens/Zonas/ModificarZona";
 import BajaZona from "../screens/Zonas/BajaZona";
 import VerZona from "../screens/Zonas/VerZona";
-import AddZona from "../screens/Zonas/AltaZona";
 import VerTodasLasZonas from "../screens/Zonas/VerTodasLasZonas";
 const Navigation = () => {
   return (
@@ -40,7 +39,7 @@ const Navigation = () => {
           name="ABMZonas"
           component={ABMZonas}
           options={{
-            headerTitle: "Principal",
+            headerTitle: "ABM Zonas",
             headerStyle: {
               backgroundColor: "#E34038",
             },
@@ -55,7 +54,7 @@ const Navigation = () => {
           component={ABMUsuarios}
           options={{
             title: "ABM Usuarios",
-            hearrStyle: {
+            headerStyle: {
               backgroundColor: "#f4511e",
             },
             headerTintColor: "#fff",

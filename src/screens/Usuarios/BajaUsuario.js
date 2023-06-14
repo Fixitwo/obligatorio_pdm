@@ -9,26 +9,26 @@ import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
 const DeleteUser = () => {
-  const [userName, setUserName] = useState("");
+  const [ciUsuario, setCiUsuario] = useState("");
   const navigation = useNavigation();
 
   const deleteUser = () => {
-    if(!userName && !userName.length && userName === ""){
-      Alert.alert("Error", "El nombre de usuario es obligatorio");
+    if(!ciUsuario && !ciUsuario.length && ciUsuario === ""){
+      Alert.alert("Error", "Debe ingresar una cédula de identidad");
       return false;
     }
 
     db.transaction((tx) => {
       tx.executeSql(
-        'DELETE FROM users WHERE userName = ?',
-        [userName],
+        'DELETE FROM usuarios WHERE ciUsuario = ?',
+        [ciUsuario],
         (tx, results) => {
           console.log("Results", results.rowsAffected);
           if(results.rowsAffected > 0){
             Alert.alert("Exito", "Usuario borrado correctamente", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
+                onPress: () => navigation.navigate("ABMUsers"),
               }
             ],
             {
@@ -39,7 +39,6 @@ const DeleteUser = () => {
             Alert.alert("Error", "El usuario no existe", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
               }
             ],
             {
@@ -53,8 +52,8 @@ const DeleteUser = () => {
 
   }
 
-  const handleUserName = (username) => {
-    setUserName(username);
+  const handleCiUsuario = (ciUsuario) => {
+    setCiUsuario(ciUsuario);
   }
 
   return (
@@ -65,10 +64,11 @@ const DeleteUser = () => {
             <MyText textValue="Busqueda de Usuario" textStyle={styles.textStyle}/>
             <KeyboardAvoidingView>
               <MyInputText
-                placeholder="Nombre de usuario"
-                onChangeText={handleUserName}
-                value={userName}
+                placeholder="Cédula de identidad"
+                onChangeText={handleCiUsuario}
+                value={ciUsuario}
                 styles={styles.inputStyle}
+                keyboardType='numeric'
               />
               <MySingleButton
                 title="Borrar"
