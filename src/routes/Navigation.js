@@ -15,7 +15,6 @@ import AddZona from "../screens/Zonas/AltaZona";
 import ModificarZona from "../screens/Zonas/ModificarZona";
 import BajaZona from "../screens/Zonas/BajaZona";
 import VerZona from "../screens/Zonas/VerZona";
-import AddZona from "../screens/Zonas/AltaZona";
 import VerTodasLasZonas from "../screens/Zonas/VerTodasLasZonas";
 const Navigation = () => {
   return (
