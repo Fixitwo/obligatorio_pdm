@@ -45,7 +45,7 @@ const AddUser = () => {
       // llamar a la db y guarar los datos
       db.transaction((tx) => {
         tx.executeSql(
-          'INSERT INTO usuarios(nombreUsuario, apellidoUsuario, ciUsuario) VALUES (?, ?, ?)'
+          'INSERT INTO usuarios(nombreUsuario, apellidoUsuario, ciUsuario) VALUES (?, ?, ?)',
           [name, lastName, cedula],
           (tx,results) => {
               if(results.rowsAffected > 0){

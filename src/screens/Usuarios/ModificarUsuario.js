@@ -38,7 +38,7 @@ const EditUser = () => {
   };
 
   const handleCi = (ci) => {
-    setCi(ci);
+    setCi(ci.parseInt());
   };
   // metodo validar datos
   const validateData = () => {
@@ -56,11 +56,6 @@ const EditUser = () => {
       Alert.alert("Error", "La cédula de identidad es obligatoria");
       return false;
     }
-    if (ci.length != 8) {
-      Alert.alert("Error", "La cédula de identidad debe tener 8 caracteres");
-      return false;
-    }
-
     return true;
   };
 
@@ -113,6 +108,7 @@ const EditUser = () => {
         (_, results) => {
           if(results.rows.length > 0) {
             const user = results.rows.item(0);
+            console.log(user.nombreUsuario, user.apellidoUsuario, user.ciUsuario)
             setNombre(user.nombreUsuario);
             setApellido(user.apellidoUsuario);
             setCi(user.ciUsuario);
