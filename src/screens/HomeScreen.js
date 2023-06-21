@@ -13,8 +13,8 @@ const HomeScreen = ({ navigation }) => {
 
   const createDb = (tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, nombreUsuario VARCHAR(60), apellidoUsuario VARCHAR(60), ciUsuario NUMERIC(8))',
-      'CREATE TABLE IF NOT EXISTS zonas (id INTEGER PRIMARY KEY AUTOINCREMENT, lugar VARCHAR(60), departamento VARCHAR(20), trabajador INTEGER, longitud INTEGER, latitud INTEGER)',
+      'CREATE TABLE IF NOT EXISTS usuarios (idUsuario INTEGER PRIMARY KEY AUTOINCREMENT, nombreUsuario VARCHAR(60) NOT NULL, apellidoUsuario VARCHAR(60) NOT NULL, ciUsuario numeric(8) NOT NULL UNIQUE)',
+      "CREATE TABLE IF NOT EXISTS zonas (idZona INTEGER PRIMARY KEY AUTOINCREMENT, lugar VARCHAR(50), departamento VARCHAR(30) check(departamento in ('Colonia', 'San José', 'Soriano', 'Canelones', 'Montevideo', 'Río Negro','Payandú','Salto','Artigas','Rivera','Tacuarembó','Durazno','Flores','Florida','Cerro Largo','Lavalleja','Maldonado','Rocha','Treinta y Tres')), numTrabajadores integer, longitud real check(longitud between -180 and 180), latitud real check(latitud between -90 and 90)",
       []
     );
   }

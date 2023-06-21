@@ -94,8 +94,8 @@ const Navigation = () => {
           }}
         />
 
-        <Stack.Screen 
-          name="BajaUsuario" 
+        <Stack.Screen
+          name="BajaUsuario"
           component={BajaUsuario}
           options={{
             title: "Baja de Usuario",
@@ -106,12 +106,12 @@ const Navigation = () => {
             headerTitleStyle: {
               fontWeight: "bold",
             },
-          }} 
+          }}
         />
 
-        <Stack.Screen 
-          name="VerUsuario" 
-          component={VerUsuario} 
+        <Stack.Screen
+          name="VerUsuario"
+          component={VerUsuario}
           options={{
             title: "Ver Usuario",
             headerStyle: {
@@ -124,9 +124,9 @@ const Navigation = () => {
           }}
         />
 
-        <Stack.Screen 
-          name="VerTodosLosUsuarios" 
-          component={VerTodosLosUsuarios} 
+        <Stack.Screen
+          name="VerTodosLosUsuarios"
+          component={VerTodosLosUsuarios}
           options={{
             title: "Ver todos los Usuarios",
             headerStyle: {
@@ -152,8 +152,8 @@ const Navigation = () => {
             },
           }}
         />
-        <Stack.Screen 
-          name="BajaZona" 
+        <Stack.Screen
+          name="BajaZona"
           component={BajaZona}
           options={{
             title: "Baja de Zona",
@@ -164,7 +164,7 @@ const Navigation = () => {
             headerTitleStyle: {
               fontWeight: "bold",
             },
-          }} 
+          }}
         />
         <Stack.Screen
           name="ModificarZona"
@@ -180,9 +180,9 @@ const Navigation = () => {
             },
           }}
         />
-        <Stack.Screen 
-          name="VerZona" 
-          component={VerZona} 
+        <Stack.Screen
+          name="VerZona"
+          component={VerZona}
           options={{
             title: "Ver Zona",
             headerStyle: {
@@ -195,11 +195,11 @@ const Navigation = () => {
           }}
         />
 
-<Stack.Screen 
-          name="VerTodaslaszonas" 
-          component={VerTodasLasZonas} 
+        <Stack.Screen
+          name="VerTodasLasZonas"
+          component={VerTodasLasZonas}
           options={{
-            title: "Ver todos las zonas",
+            title: "Ver todas las zonas",
             headerStyle: {
               backgroundColor: "#f4511e",
             },

@@ -1,14 +1,13 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
   Alert,
 } from "react-native";
-
+import { Picker } from "@react-native-picker/picker";
 import MyInputText from "../../components/MyInputText";
 import MySingleButton from "../../components/MySingleButton";
 import DatabaseConnection from "../../database/db-connection";
@@ -18,7 +17,7 @@ const db = DatabaseConnection.getConnection();
 const AddZona = () => {
   // estados para los campos del formulario
   const [lugar, setLugar] = useState("");
-  const [departamento, setDepartamento] = useState("");
+  const [departamento, setDepartamento] = useState();
   const [trabajador, setTrabajador] = useState("");
   const [longitud, setLongitud] = useState("");
   const [latitud, setLatitud] = useState("");
@@ -28,86 +27,87 @@ const AddZona = () => {
   // metodo para setear los estados
   const handleLugar = (lugar) => {
     setLugar(lugar);
-  }
+  };
 
   const handleDepartamento = (departamento) => {
     setDepartamento(departamento);
-  }
+  };
 
   const handleTrabajador = (trabajador) => {
-    setTranajador(trabajador);
-  }
+    setTrabajador(trabajador);
+  };
 
   const handleLongitud = (longitud) => {
     setLongitud(longitud);
-  }
+  };
 
   const handleLatitud = (latitud) => {
     setLatitud(latitud);
-  }
+  };
   // metodo guarde el formulario
-  const AddZona = () => {
+  const addZona = () => {
     // llamar a la validacion de datos
     // si la validacion es correcta
     // llamar al metodo de guardar
-    console.log("### add user ###");
 
-    if(validateData()){
-      console.log("### save user ###");
-      // llamar a la db y guarar los datos
+    if (validateData()) {
       db.transaction((tx) => {
         tx.executeSql(
-          'INSERT INTO zonas (lugar, departamento, trabajador, longitud, latitud) VALUES (?, ?, ?)',
-          [lugar , departamento, trabajador, longitud, latitud],
+          'INSERT INTO zonas (lugar, departamento, numTrabajadores, longitud, latitud) VALUES (?, ?, ?)',
+          [lugar, departamento, trabajador, longitud, latitud],
           (tx, results) => {
-            if(results.rowsAffected > 0){
-              Alert.alert("Exito", "Zona registrado correctamente", [
+            if (results.rowsAffected > 0) {
+              Alert.alert(
+                "Exito",
+                "Zona registrado correctamente",
+                [
+                  {
+                    text: "Ok",
+                    onPress: () => navigation.navigate("HomeScreen"),
+                  },
+                ],
                 {
-                  text: "Ok",
-                  onPress: () => navigation.navigate("HomeScreen"),
+                  cancelable: false,
                 }
-              ],
-              {
-                cancelable: false
-              } );
+              );
               clearData();
-            }else{
+            } else {
               Alert.alert("Error", "Error al registrar la zona");
             }
           }
-        )
+        );
       });
     }
-  }
+  };
 
   // metodo validar datos
   const validateData = () => {
-    if(lugar === "" && !lugar.trim()){
+    if (lugar === "" && !lugar.trim()) {
       Alert.alert("Error", "El lugar es obligatorio");
       return false;
     }
 
-    if(departamento === "" && !departamento.trim()){
+    if (departamento === "" && !departamento.trim()) {
       Alert.alert("Error", "El departamento es obligatorio");
       return false;
     }
 
-    if(trabajador === "" && !trabajador.trim()){
+    if (trabajador === "" && !trabajador.trim()) {
       Alert.alert("Error", "El N° de trabajadores es obligatorio");
       return false;
     }
 
-    if(longitud === "" && !longitud.trim()){
-      Alert.alert("Error", "La longitud es obligatorio");
+    if (longitud === "" && !longitud.trim()) {
+      Alert.alert("Error", "La longitud es obligatoria");
       return false;
     }
 
-    if(latitud === "" && !latitud.trim()){
-      Alert.alert("Error", "La latitud es obligatorio");
+    if (latitud === "" && !latitud.trim()) {
+      Alert.alert("Error", "La latitud es obligatoria");
       return false;
     }
     return true;
-  }
+  };
 
   //  clear de los datos
   const clearData = () => {
@@ -116,7 +116,7 @@ const AddZona = () => {
     setTrabajador("");
     setLongitud("");
     setLatitud("");
-  }
+  };
   // Formulario de registro de usuario
   return (
     <SafeAreaView>
@@ -124,25 +124,51 @@ const AddZona = () => {
         <View>
           <ScrollView>
             <KeyboardAvoidingView>
-              <MyInputText 
+              <MyInputText
                 styles={styles.inputLugar}
                 placeholder="Nombre de Lugar"
                 onChangeText={handleLugar}
                 value={lugar}
-                />
+              />
+    <View style={styles.container}>
 
-              <MyInputText 
-                styles={styles.inputDepartamento}
+              <Picker
                 placeholder="Nombre del Departamento"
-                onChangeText={handleDepartamento}
-                value={departamento}
-                />
-
+                selectedValue={departamento}
+                style={{     maxLength : 40,
+                  minLength:0 }}
+                onValueChange={(itemValue, itemIndex) =>
+                  handleDepartamento(itemValue)
+                }
+                prompt="Departamento"
+              >
+                <Picker.Item label="Artigas" value="Artigas" />
+                <Picker.Item label="Canelones" value="Canelones" />
+                <Picker.Item label="Cerro Largo" value="Cerro Largo" />
+                <Picker.Item label="Colonia" value="Colonia" />
+                <Picker.Item label="Durazno" value="Durazno" />
+                <Picker.Item label="Flores" value="Flores" />
+                <Picker.Item label="Florida" value="Florida" />
+                <Picker.Item label="Lavalleja" value="Lavalleja" />
+                <Picker.Item label="Maldonado" value="Maldonado" />
+                <Picker.Item label="Montevideo" value="Montevideo" />
+                <Picker.Item label="Paysandú" value="Paysandú" />
+                <Picker.Item label="Río Negro" value="Río Negro" />
+                <Picker.Item label="Rivera" value="Rivera" />
+                <Picker.Item label="Rocha" value="Rocha" />
+                <Picker.Item label="Salto" value="Salto" />
+                <Picker.Item label="San José" value="San José" />
+                <Picker.Item label="Soriano" value="Soriano" />
+                <Picker.Item label="Tacuarembó" value="Tacuarembó" />
+                <Picker.Item label="Treinta y Tres" value="Treinta y Tres" />
+              </Picker>
+              </View>
               <MyInputText
                 styles={styles.inputTrabajador}
                 placeholder="N° trabajadores"
                 onChangeText={handleTrabajador}
                 value={trabajador}
+                keyboardType="numeric"
               />
 
               <MyInputText
@@ -150,6 +176,7 @@ const AddZona = () => {
                 placeholder="Longituid"
                 onChangeText={handleLongitud}
                 value={longitud}
+                keyboardType="numeric"
               />
 
               <MyInputText
@@ -157,14 +184,14 @@ const AddZona = () => {
                 placeholder="Latitud"
                 onChangeText={handleLatitud}
                 value={latitud}
+                keyboardType="numeric"
               />
 
               <MySingleButton
                 title="Registrar Zona"
                 btnColor="green"
-                onPress={AddZona}
+                onPress={addZona}
               />
-
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
@@ -176,10 +203,19 @@ const AddZona = () => {
 export default AddZona;
 
 const styles = StyleSheet.create({
-  container: {},
-  inputLugar:{},
-  inputDepartamento:{},
-  inputTrabajador:{},
-  inputLongitud:{},
-  inputLatitud:{}
+  container: {
+    flex: 1,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 10,
+    marginBottom: 10,
+    borderColor: '#d3d3d3',
+    borderWidth: 1,
+    padding: 10
+  },
+  inputLugar: {},
+  inputDepartamento: {},
+  inputTrabajador: {},
+  inputLongitud: {},
+  inputLatitud: {},
 });

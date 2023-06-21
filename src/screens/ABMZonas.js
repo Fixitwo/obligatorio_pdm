@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { View, SafeAreaView, ScrollView, Text, StyleSheet } from "react-native";
+import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import MyButton from "../components/MyButton";
 import DatabaseConnection from "../database/db-connection";
 const db = DatabaseConnection.getConnection();
@@ -7,12 +7,12 @@ const db = DatabaseConnection.getConnection();
 const ABMZonas = ({ navigation }) => {
 
   const dropDb = (tx) => {
-    tx.executeSql('DROP TABLE IF EXISTS Zonas', []);
+    tx.executeSql('DROP TABLE IF EXISTS zonas', []);
   }
 
   const createDb = (tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS Zonas (idZona INTEGER PRIMARY KEY AUTOINCREMENT, lugar VARCHAR(11) check(lugar in ('Estancia', 'Quinta', 'Plantación')), departamento VARCHAR(30) check(departamento in ('Colonia', 'San José', 'Soriano', 'Canelones', 'Montevideo', 'Río Negro','Payandú','Salto','Artigas','Rivera','Tacuarembó','Durazno','Flores','Florida','Cerro Largo','Lavalleja','Maldonado','Rocha','Treinta y Tres')), numTrabajadores integer",
+      "CREATE TABLE IF NOT EXISTS zonas (idZona INTEGER PRIMARY KEY AUTOINCREMENT, lugar VARCHAR(50), departamento VARCHAR(30) check(departamento in ('Colonia', 'San José', 'Soriano', 'Canelones', 'Montevideo', 'Río Negro','Payandú','Salto','Artigas','Rivera','Tacuarembó','Durazno','Flores','Florida','Cerro Largo','Lavalleja','Maldonado','Rocha','Treinta y Tres')), numTrabajadores integer, longitud real check(longitud between -180 and 180), latitud real check(latitud between -90 and 90)",
       []
     );
   }
@@ -20,7 +20,7 @@ const ABMZonas = ({ navigation }) => {
   useEffect(() => {
     db.transaction((txn) => {
       txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='Zonas'", [],
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='zonas'", [],
         (_, results) => {
           if(results.rows.length == 0){
             dropDb(txn);

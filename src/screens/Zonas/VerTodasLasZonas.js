@@ -5,7 +5,7 @@ import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 import { useNavigation } from "@react-navigation/native";
 
-const ViewAllZonas = () => {
+const VerTodasLasZonas = () => {
   // definir un estado local, para guardar los usuarios
   const [zonas, setZonas] = useState([]);
   const navigation = useNavigation();
@@ -71,7 +71,7 @@ const ViewAllZonas = () => {
   );
 };
 
-export default ViewAllZonas;
+export default VerTodasLasZonas;
 
 const styles = StyleSheet.create({
   container: {
