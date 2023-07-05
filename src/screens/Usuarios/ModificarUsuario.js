@@ -38,7 +38,7 @@ const EditUser = () => {
   };
 
   const handleCi = (ci) => {
-    setCi(ci.parseInt());
+    setCi(parseInt(ci));
   };
   // metodo validar datos
   const validateData = () => {
@@ -74,14 +74,14 @@ const EditUser = () => {
     if (validateData()) {
       db.transaction((tx) => {
         tx.executeSql(
-          "UPDATE usuarios set nombreUsuario=?, ApellidoUsuario=?, ciUsuario=? WHERE ciUsuario=?",
+          "UPDATE usuarios set nombre=?, apellido=?, cedula=? WHERE cedula=?",
           [nombre, apellido, ci, ciSearch],
           (_, results) => {
             if (results.rowsAffected > 0) {
               clearData();
               Alert.alert("Exito", "Usuario actualizado correctamente", [
                 {
-                  onPress: () => navigation.navigate("ABMUsers"),
+                  onPress: () => navigation.navigate("ABMUsuarios"),
                 },
                 {
                   cancelable: false,
@@ -103,15 +103,15 @@ const EditUser = () => {
     }
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM usuarios WHERE ciUsuario = ?",
+        "SELECT * FROM usuarios WHERE cedula = ?",
         [ciSearch],
         (_, results) => {
           if(results.rows.length > 0) {
             const user = results.rows.item(0);
-            console.log(user.nombreUsuario, user.apellidoUsuario, user.ciUsuario)
-            setNombre(user.nombreUsuario);
-            setApellido(user.apellidoUsuario);
-            setCi(user.ciUsuario);
+            console.log(user.nombre, user.apellido, user.cedula)
+            setNombre(user.nombre);
+            setApellido(user.apellido);
+            setCi(user.cedula);
           }else {
             Alert.alert("Error", "Usuario no encontrado");
             clearCiSearch();
@@ -156,6 +156,7 @@ const EditUser = () => {
 
             <MyInputText 
               placeholder="Cédula de identidad"
+              keyboardType="numeric"
               value={ci.toString()}
               onChangeText={handleCi}
             />

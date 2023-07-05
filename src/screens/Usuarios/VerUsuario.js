@@ -37,7 +37,7 @@ const ViewUser = () => {
 
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM usuarios WHERE ciUsuario=?",
+        "SELECT * FROM usuarios WHERE cedula=?",
         [ciUsuario],
         (tx, results) => {
           console.log("Results", results.rows);
@@ -48,7 +48,7 @@ const ViewUser = () => {
             Alert.alert("Error", "El usuario no existe", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("ABMUsers"),
+                onPress: () => navigation.navigate("ABMUsuarios"),
               }
             ],
             {
@@ -81,9 +81,9 @@ const ViewUser = () => {
                 {user ? (
                   <>
                     <MyText textValue="Nombre" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={user.nombreUsuario + " " + user.apellidoUsuario} textStyle={styles.presenterText}/>
+                    <MyText textValue={user.nombre + " " + user.apellido} textStyle={styles.presenterText}/>
                     <MyText textValue="Cédula de identidad" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={user.ciUsuario} textStyle={styles.presenterText}/>
+                    <MyText textValue={user.cedula} textStyle={styles.presenterText}/>
                   </>
                 ) : (
                   <Text style={styles.presenterText}>No hay usuario</Text>

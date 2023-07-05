@@ -23,7 +23,7 @@ const ViewAllUsers = () => {
             [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("ABMUsers"),
+                onPress: () => navigation.navigate("ABMUsuarios"),
               },
             ],
             { cancelable: false }
@@ -37,10 +37,10 @@ const ViewAllUsers = () => {
     return (
       <View key={item.id} style={styles.listItemView}>
         <MyText textValue="Nombre" textStyle={styles.textStyle} />
-        <MyText textValue={item.nombreUsuario +" "+ item.apellidoUsuario} textStyle={styles.textStyle} />
+        <MyText textValue={item.nombre +" "+ item.apellido} textStyle={styles.textStyle} />
 
         <MyText textValue="Cédula de identidad" textStyle={styles.textStyle} />
-        <MyText textValue={item.ciUsuario} textStyle={styles.textStyle} />
+        <MyText textValue={item.cedula} textStyle={styles.textStyle} />
       </View>
     );
   };

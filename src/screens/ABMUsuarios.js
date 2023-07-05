@@ -6,25 +6,12 @@ const db = DatabaseConnection.getConnection();
 
 const ABMUsuarios = ({ navigation }) => {
 
-  const dropDb = (tx) => {
-    tx.executeSql('DROP TABLE IF EXISTS usuarios', []);
-  }
-
-  const createDb = (tx) => {
-    tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS usuarios (idUsuario INTEGER PRIMARY KEY AUTOINCREMENT, nombreUsuario VARCHAR(60) NOT NULL, apellidoUsuario VARCHAR(60) NOT NULL, ciUsuario numeric(8) NOT NULL UNIQUE)',
-      []
-    );
-  }
-
   useEffect(() => {
     db.transaction((txn) => {
       txn.executeSql(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'", [],
         (_, results) => {
           if(results.rows.length == 0){
-            dropDb(txn);
-            createDb(txn);
           } else {
             console.log("Table already exists");
             // TODO:descomentar si quiero volver a borrar y recrear la tabla

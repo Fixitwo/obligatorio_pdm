@@ -20,7 +20,7 @@ const DeleteUser = () => {
 
     db.transaction((tx) => {
       tx.executeSql(
-        'DELETE FROM usuarios WHERE ciUsuario = ?',
+        'DELETE FROM usuarios WHERE cedula = ?',
         [ciUsuario],
         (tx, results) => {
           console.log("Results", results.rowsAffected);
@@ -28,7 +28,7 @@ const DeleteUser = () => {
             Alert.alert("Exito", "Usuario borrado correctamente", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("ABMUsers"),
+                onPress: () => navigation.navigate("ABMUsuarios"),
               }
             ],
             {
