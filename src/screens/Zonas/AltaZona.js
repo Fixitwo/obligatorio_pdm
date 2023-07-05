@@ -101,16 +101,6 @@ const AddZona = () => {
       Alert.alert("Error", "El N° de trabajadores es obligatorio");
       return false;
     }
-
-    if (longitud === "" && !longitud.trim()) {
-      Alert.alert("Error", "La longitud es obligatoria");
-      return false;
-    }
-
-    if (latitud === "" && !latitud.trim()) {
-      Alert.alert("Error", "La latitud es obligatoria");
-      return false;
-    }
     return true;
   };
 
