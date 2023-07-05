@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   SafeAreaView,
   ScrollView,
@@ -15,28 +14,28 @@ import DatabaseConnection from "../../database/db-connection";
 import { useNavigation } from "@react-navigation/native";
 const db = DatabaseConnection.getConnection();
 
-const AddUser = () => {
+const AñadirUsuario = () => {
   // estados para los campos del formulario
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
   const [cedula, setCedula] = useState("");
 
   const navigation = useNavigation();
 
   // metodo para setear los estados
-  const handleName = (Name) => {
-    setName(Name);
+  const handleNombre = (nombre) => {
+    setNombre(nombre);
   };
 
-  const handleLastName = (lastName) => {
-    setLastName(lastName);
+  const handleApellido = (apellido) => {
+    setApellido(apellido);
   };
 
   const handleCedula = (cedula) => {
     setCedula(cedula);
   };
   // metodo guarde el formulario
-  const addUser = () => {
+  const añadirUsuario = () => {
     // llamar a la validacion de datos
     // si la validacion es correcta
     // llamar al metodo de guardar
@@ -45,14 +44,14 @@ const AddUser = () => {
       // llamar a la db y guarar los datos
       db.transaction((tx) => {
         tx.executeSql(
-          'INSERT INTO usuarios(nombreUsuario, apellidoUsuario, ciUsuario) VALUES (?, ?, ?)',
-          [name, lastName, cedula],
+          'INSERT INTO usuarios(nombre, apellido, cedula) VALUES (?, ?, ?)',
+          [nombre, apellido, cedula],
           (tx,results) => {
               if(results.rowsAffected > 0){
                 Alert.alert("Exito", "Usuario registrado correctamente", [
                   {
                     text: "Ok",
-                    onPress: () => navigation.navigate("ABMUsers"),
+                    onPress: () => navigation.navigate("ABMUsuarios"),
                   }
                 ],
                 {
@@ -70,12 +69,12 @@ const AddUser = () => {
 
   // metodo validar datos
   const validateData = () => {
-    if (name === "" && !name.trim()) {
+    if (nombre === "" && !nombre.trim()) {
       Alert.alert("Error", "El nombre del usuario es obligatorio");
       return false;
     }
 
-    if (lastName === "" && !lastName.trim()) {
+    if (apellido === "" && !apellido.trim()) {
       Alert.alert("Error", "El apellido es obligatorio");
       return false;
     }
@@ -93,8 +92,8 @@ const AddUser = () => {
 
   //  clear de los datos
   const clearData = () => {
-    setName("");
-    setLastName("");
+    setNombre("");
+    setApellido("");
     setCedula("");
   };
   // Formulario de registro de usuario
@@ -107,15 +106,15 @@ const AddUser = () => {
               <MyInputText
                 styles={styles.inputUser}
                 placeholder="Nombre"
-                onChangeText={handleName}
-                value={name}
+                onChangeText={handleNombre}
+                value={nombre}
               />
 
               <MyInputText
                 styles={styles.inputUser}
                 placeholder="Apellido"
-                onChangeText={handleLastName}
-                value={lastName}
+                onChangeText={handleApellido}
+                value={apellido}
               />
 
               <MyInputText
@@ -129,7 +128,7 @@ const AddUser = () => {
               <MySingleButton
                 title="Registrar Usuario"
                 btnColor="green"
-                onPress={addUser}
+                onPress={añadirUsuario}
               />
             </KeyboardAvoidingView>
           </ScrollView>
@@ -139,7 +138,7 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default AñadirUsuario;
 
 const styles = StyleSheet.create({
   container: {},

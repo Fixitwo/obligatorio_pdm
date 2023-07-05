@@ -49,11 +49,12 @@ const AddZona = () => {
     // llamar a la validacion de datos
     // si la validacion es correcta
     // llamar al metodo de guardar
-
+    
     if (validateData()) {
+
       db.transaction((tx) => {
         tx.executeSql(
-          'INSERT INTO zonas (lugar, departamento, numTrabajadores, longitud, latitud) VALUES (?, ?, ?)',
+          'INSERT INTO zonas (lugar, departamento, numTrabajadores, longitud, latitud) VALUES (?, ?, ?, ?, ?)',
           [lugar, departamento, trabajador, longitud, latitud],
           (tx, results) => {
             if (results.rowsAffected > 0) {
@@ -63,7 +64,7 @@ const AddZona = () => {
                 [
                   {
                     text: "Ok",
-                    onPress: () => navigation.navigate("HomeScreen"),
+                    onPress: () => navigation.navigate("ABMZonas"),
                   },
                 ],
                 {
@@ -135,9 +136,9 @@ const AddZona = () => {
               <Picker
                 placeholder="Nombre del Departamento"
                 selectedValue={departamento}
-                style={{     maxLength : 40,
+                style={{ maxLength : 40,
                   minLength:0 }}
-                onValueChange={(itemValue, itemIndex) =>
+                onValueChange={(itemValue) =>
                   handleDepartamento(itemValue)
                 }
                 prompt="Departamento"

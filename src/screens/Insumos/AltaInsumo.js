@@ -32,7 +32,7 @@ const AddInsumo = () => {
     setCantidad(cantidad);
   }
   // metodo guarde el formulario
-  const AddInsumo = () => {
+  const addInsumo = () => {
     // llamar a la validacion de datos
     // si la validacion es correcta
     // llamar al metodo de guardar
@@ -50,7 +50,7 @@ const AddInsumo = () => {
               Alert.alert("Exito", "Insumo registrado correctamente", [
                 {
                   text: "Ok",
-                  onPress: () => navigation.navigate("HomeScreen"),
+                  onPress: () => navigation.navigate("ABMInsumos"),
                 }
               ],
               {
@@ -110,7 +110,7 @@ const AddInsumo = () => {
               <MySingleButton
                 title="Registrar Insumo"
                 btnColor="green"
-                onPress={AddInsumo}
+                onPress={addInsumo}
               />
 
             </KeyboardAvoidingView>

@@ -4,18 +4,28 @@ import { NavigationContainer } from "@react-navigation/native";
 const Stack = createStackNavigator();
 // TODO Importar cada una de las pantallas
 import HomeScreen from "../screens/HomeScreen";
+
 import ABMUsuarios from "../screens/ABMUsuarios";
 import AddUser from "../screens/Usuarios/AltaUsuario";
 import ModificarUsuario from "../screens/Usuarios/ModificarUsuario";
 import BajaUsuario from "../screens/Usuarios/BajaUsuario";
 import VerUsuario from "../screens/Usuarios/VerUsuario";
 import VerTodosLosUsuarios from "../screens/Usuarios/VerTodosLosUsuarios";
+
 import ABMZonas from "../screens/ABMZonas";
 import AddZona from "../screens/Zonas/AltaZona";
 import ModificarZona from "../screens/Zonas/ModificarZona";
 import BajaZona from "../screens/Zonas/BajaZona";
 import VerZona from "../screens/Zonas/VerZona";
 import VerTodasLasZonas from "../screens/Zonas/VerTodasLasZonas";
+
+import ABMInsumos from "../screens/ABMInsumos";
+import AddInsumo from "../screens/Insumos/AltaInsumo";
+import ModificarInsumo from "../screens/Insumos/ModificarInsumo"
+import BajaInsumo from "../screens/Insumos/BajaInsumo";
+import VerInsumo from "../screens/Insumos/VerInsumo";
+import VerTodosLosInsumos from"../screens/Insumos/VerTodosLosInsumos";
+
 const Navigation = () => {
   return (
     <NavigationContainer>
@@ -35,22 +45,10 @@ const Navigation = () => {
             },
           }}
         />
+
+        
         <Stack.Screen
-          name="ABMZonas"
-          component={ABMZonas}
-          options={{
-            headerTitle: "ABM Zonas",
-            headerStyle: {
-              backgroundColor: "#E34038",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="ABMUsers"
+          name="ABMUsuarios"
           component={ABMUsuarios}
           options={{
             title: "ABM Usuarios",
@@ -138,6 +136,21 @@ const Navigation = () => {
             },
           }}
         />
+        
+        <Stack.Screen
+          name="ABMZonas"
+          component={ABMZonas}
+          options={{
+            headerTitle: "ABM Zonas",
+            headerStyle: {
+              backgroundColor: "#E34038",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
         <Stack.Screen
           name="AltaZona"
           component={AddZona}
@@ -200,6 +213,92 @@ const Navigation = () => {
           component={VerTodasLasZonas}
           options={{
             title: "Ver todas las zonas",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        
+        <Stack.Screen
+          name="ABMInsumos"
+          component={ABMInsumos}
+          options={{
+            headerTitle: "ABM Insumos",
+            headerStyle: {
+              backgroundColor: "#E34038",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="AltaInsumo"
+          component={AddInsumo}
+          options={{
+            title: "Alta de Insumo",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="BajaInsumo"
+          component={BajaInsumo}
+          options={{
+            title: "Baja de Insumo",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="ModificarInsumo"
+          component={ModificarInsumo}
+          options={{
+            title: "Modificar Insumo",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="VerInsumo"
+          component={VerInsumo}
+          options={{
+            title: "Ver Insumo",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="VerTodosLosInsumos"
+          component={VerTodosLosInsumos}
+          options={{
+            title: "Ver todos los insumos",
             headerStyle: {
               backgroundColor: "#f4511e",
             },
