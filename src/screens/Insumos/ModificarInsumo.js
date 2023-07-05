@@ -33,15 +33,10 @@ const EditInsumo = () => {
   };
 
   const handlenomIns = (nomIns) => {
-    setnomIns(parseInt(nomIns));
+    setnomIns(nomIns);
   };
   // metodo validar datos
   const validateData = () => {
-    if (!nombre && !nombre.length && !nombre.trim()) {
-      Alert.alert("Error", "El nombre es obligatorio");
-      return false;
-    }
-
     if (!nomIns && !nomIns.length && !nomIns.trim()) {
       Alert.alert("Error", "El nombre del insumo es obligatorio");
       return false;
@@ -69,7 +64,7 @@ const EditInsumo = () => {
       db.transaction((tx) => {
         tx.executeSql(
           "UPDATE insumos set nomIns=?, cantidad=? WHERE nomIns=?",
-          [nombre, cantidad, nomIns],
+          [nomIns, cantidad, nomInsSearch],
           (_, results) => {
             if (results.rowsAffected > 0) {
               clearData();

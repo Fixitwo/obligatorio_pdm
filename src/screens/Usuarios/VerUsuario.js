@@ -48,7 +48,7 @@ const ViewUser = () => {
             Alert.alert("Error", "El usuario no existe", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("ABMUsers"),
+                onPress: () => navigation.navigate("ABMUsuarios"),
               }
             ],
             {

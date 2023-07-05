@@ -81,7 +81,7 @@ const EditUser = () => {
               clearData();
               Alert.alert("Exito", "Usuario actualizado correctamente", [
                 {
-                  onPress: () => navigation.navigate("ABMUsers"),
+                  onPress: () => navigation.navigate("ABMUsuarios"),
                 },
                 {
                   cancelable: false,

@@ -28,7 +28,7 @@ const DeleteUser = () => {
             Alert.alert("Exito", "Usuario borrado correctamente", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("ABMUsers"),
+                onPress: () => navigation.navigate("ABMUsuarios"),
               }
             ],
             {
