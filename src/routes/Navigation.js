@@ -18,6 +18,7 @@ import ModificarZona from "../screens/Zonas/ModificarZona";
 import BajaZona from "../screens/Zonas/BajaZona";
 import VerZona from "../screens/Zonas/VerZona";
 import VerTodasLasZonas from "../screens/Zonas/VerTodasLasZonas";
+import MapaZona from "../screens/Zonas/MapaZona";
 
 import ABMInsumos from "../screens/ABMInsumos";
 import AddInsumo from "../screens/Insumos/AltaInsumo";
@@ -222,7 +223,20 @@ const Navigation = () => {
             },
           }}
         />
-        
+        <Stack.Screen
+          name="MapaZona"
+          component={MapaZona}
+          options={{
+            title: "Mapa de zonas",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
         <Stack.Screen
           name="ABMInsumos"
           component={ABMInsumos}
