@@ -23,7 +23,7 @@ const ViewAllUsers = () => {
             [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("ABMUsuarios"),
+                onPress: () => navigation.navigate("ABMUsers"),
               },
             ],
             { cancelable: false }

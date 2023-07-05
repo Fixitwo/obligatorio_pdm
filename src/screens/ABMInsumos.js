@@ -6,25 +6,12 @@ const db = DatabaseConnection.getConnection();
 
 const ABMInsumos = ({ navigation }) => {
 
-  const dropDb = (tx) => {
-    tx.executeSql('DROP TABLE IF EXISTS insumos', []);
-  }
-
-  const createDb = (tx) => {
-    tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS insumos (idInsumo INTEGER PRIMARY KEY AUTOINCREMENT, nombreInsumo VARCHAR(60), cantidad INTEGER)',
-      []
-    );
-  }
-
   useEffect(() => {
     db.transaction((txn) => {
       txn.executeSql(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='insumos'", [],
         (_, results) => {
           if(results.rows.length == 0){
-            dropDb(txn);
-            createDb(txn);
           } else {
             console.log("Table already exists");
             // TODO:descomentar si quiero volver a borrar y recrear la tabla
@@ -67,7 +54,7 @@ const ABMInsumos = ({ navigation }) => {
                 title="Ver Insumo"
                 btnColor="blue"
                 btnIcon="user-circle-o"
-                onPress={() => navigation.navigate("VerUsuario")}
+                onPress={() => navigation.navigate("VerInsumo")}
               />
 
               <MyButton

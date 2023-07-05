@@ -17,46 +17,50 @@ const db = DatabaseConnection.getConnection();
 
 const EditInsumo = () => {
   // estados
-  const [nomInsSearch, setNomInsSearch] = useState("");
-  const [nomIns, setNomIns] = useState("");
+  const [nomInsSearch, setnomInsSearch] = useState("");
+  const [nomIns, setnomIns] = useState("");
   const [cantidad, setCantidad] = useState("");
   const navigation = useNavigation();
 
   // metodo para setear los estados
-  const handleNomInsSearch = (nomIns) => {
-    console.log("### handleNomInsSearch ###", nomIns);
-    setNomInsSearch(nomIns);
-  };
-
-  const handleNomIns = (nomIns) => {
-    setNomIns(nomIns);
+  const handlenomInsSearch = (nomInsSearch) => {
+    console.log("### handlenomInsSearch ###", nomInsSearch);
+    setnomInsSearch(nomInsSearch);
   };
 
   const handleCantidad = (cantidad) => {
     setCantidad(cantidad);
   };
 
+  const handlenomIns = (nomIns) => {
+    setnomIns(parseInt(nomIns));
+  };
   // metodo validar datos
   const validateData = () => {
-    if (!nomIns && !nomIns.length && nomIns === "" && !lugar.trim()) {
+    if (!nombre && !nombre.length && !nombre.trim()) {
+      Alert.alert("Error", "El nombre es obligatorio");
+      return false;
+    }
+
+    if (!nomIns && !nomIns.length && !nomIns.trim()) {
       Alert.alert("Error", "El nombre del insumo es obligatorio");
       return false;
     }
-
-    if (!cantidad && !cantidad.length && cantidad === "" && !cantidad.trim()) {
+    if (!cantidad && !cantidad.length && !cantidad.trim()) {
       Alert.alert("Error", "La cantidad es obligatoria");
       return false;
     }
-
+    return true;
   };
 
-  const clearInsumoSearch = () => {
-    setNomInsSearch("");
+  const clearnomInsSearch = () => {
+    setnomInsSearch("");
   }
 
   //  clear de los datos
   const clearData = () => {
-    setNomIns("");
+    setnomIns("");
+    setnomInsSearch("");
     setCantidad("");
   };
 
@@ -65,14 +69,13 @@ const EditInsumo = () => {
       db.transaction((tx) => {
         tx.executeSql(
           "UPDATE insumos set nomIns=?, cantidad=? WHERE nomIns=?",
-          [nomIns, cantidad, nomInsSearch],
+          [nombre, cantidad, nomIns],
           (_, results) => {
             if (results.rowsAffected > 0) {
               clearData();
               Alert.alert("Exito", "Insumo actualizado correctamente", [
                 {
-                  text: "Ok",
-                  onPress: () => navigation.navigate("ABMInsumo"),
+                  onPress: () => navigation.navigate("ABMInsumos"),
                 },
                 {
                   cancelable: false,
@@ -87,7 +90,7 @@ const EditInsumo = () => {
     }
   };
 
-  const searchNomIns = () => {
+  const searchInsumo = () => {
     if(!nomInsSearch.trim() && nomInsSearch === ""){
       Alert.alert("Error", "El nombre del insumo es requerido");
       return;
@@ -99,11 +102,11 @@ const EditInsumo = () => {
         (_, results) => {
           if(results.rows.length > 0) {
             const insumo = results.rows.item(0);
-            setNomIns(insumo.nomIns);
             setCantidad(insumo.cantidad);
+            setnomIns(insumo.nomIns)
           }else {
-            Alert.alert("Error", "Insumo no encontrado");
-            clearInsumoSearch();
+            Alert.alert("Error", "Usuario no encontrado");
+            clearnomInsSearch();
           }
         }
       )
@@ -117,28 +120,29 @@ const EditInsumo = () => {
         <View style={styles.generalView}>
           <ScrollView>
             <KeyboardAvoidingView style={styles.keyboardView}>
-              <MyText textValue="Buscar Insumo" textStyle={styles.textStyle} />
+              <MyText textValue="Buscar insumo" textStyle={styles.textStyle} />
               <MyInputText
                 placeholder="Ingrese el nombre del insumo"
-                onChangeText={handleNomInsSearch}
+                onChangeText={handlenomInsSearch}
                 styles={styles.input}
                 value={nomInsSearch}
               />
               <MySingleButton 
                 title="Buscar" 
-                onPress={searchNomIns} 
+                onPress={searchInsumo} 
                 btnColor='green'
               />
 
             <MyInputText 
-              placeholder="Nombre del insumo"
+              placeholder="Nombre"
               value={nomIns}
-              onChangeText={handleNomIns}
+              onChangeText={handlenomIns}
               />
 
             <MyInputText 
               placeholder="Cantidad"
-              value={catidad}
+              keyboardType="numeric"
+              value={cantidad.toString()}
               onChangeText={handleCantidad}
             />
 
@@ -154,6 +158,7 @@ const EditInsumo = () => {
     </SafeAreaView>
   );
 };
+
 export default EditInsumo;
 
 const styles = StyleSheet.create({

@@ -43,7 +43,7 @@ const AddInsumo = () => {
       // llamar a la db y guarar los datos
       db.transaction((tx) => {
         tx.executeSql(
-          'INSERT INTO insumos (nomIns, cantidad) VALUES (?, ?, ?)',
+          'INSERT INTO insumos (nomIns, cantidad) VALUES (?, ?)',
           [nomIns, cantidad],
           (tx, results) => {
             if(results.rowsAffected > 0){
@@ -102,9 +102,10 @@ const AddInsumo = () => {
 
                 <MyInputText 
                 styles={styles.inputCantidad}
-                placeholder="cantidad de insumo en litros"
+                placeholder="Cantidad en litros"
                 onChangeText={handleCantidad}
                 value={cantidad}
+                keyboardType="numeric"
                 />
 
               <MySingleButton
