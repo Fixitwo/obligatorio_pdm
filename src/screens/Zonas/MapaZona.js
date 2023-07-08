@@ -7,11 +7,13 @@ import {
   LocationAccuracy,
 } from "expo-location";
 import MapView, { Marker } from "react-native-maps";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function MapaZona({ onLocationsSelected }) {
-  const [location, setLocation] = useState(null);
+
+export default function MapaZona(UbicacionElegida) {
+  const [location, setLocation] = useState({longitude: -32.522779, latitude: -55.765835});
   const [selectedLocations, setSelectedLocations] = useState([]);
-  const mapRef = useRef(null);
+  const mapRef = useRef();
 
   const requestForegroundPermission = async () => {
     const { status } = await requestForegroundPermissionsAsync();
@@ -55,51 +57,21 @@ export default function MapaZona({ onLocationsSelected }) {
   const handleMapPress = (coordinate) => {
     const { latitude, longitude } = coordinate;
     const newLocation = { latitude, longitude };
-    setSelectedLocations([...selectedLocations, newLocation]);
-    onLocationsSelected([...selectedLocations, newLocation]);
+    setSelectedLocations(newLocation);
+    console.log(selectedLocations)
   };
-  
-  const markerArray = [
-    {
-      id: 1,
-      latitude: -32.6110783,
-      longitude: -54.7811711,
-      title: "Juan Lacaze",
-      description: "Colonia",
-    },
-    {
-      id: 2,
-      latitude: -34.455208,
-      longitude: -57.830575,
-      title: "Colonia del Sacramento",
-      description: "Colonia",
-    },
-    {
-      id: 3,
-      latitude: -32.6110783,
-      longitude: -54.7811711,
-      title: "Carmelo",
-      description: "",
-    },
-    {
-      id: 4,
-      latitude: -34.855329,
-      longitude: -56.206648,
-      title: "Montevideo",
-      description: "Montevideo - Prado",
-    },
-  ];
+
+  const ElegirUNaZona = (FuncionZona) =>{
+    FuncionZona(selectedLocations)
+  }
 
   return (
     <View style={styles.container}>
-      <Text>Cargando Mapa</Text>
-      {!location && <ActivityIndicator size="large" />}
-      {location && (
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: -32.6110783,
-            longitude: -54.7811711,
+            latitude:  -32.522779,
+            longitude: -55.765835,
             longitudeDelta: 0.005,
             latitudeDelta: 0.005,
           }}
@@ -107,37 +79,16 @@ export default function MapaZona({ onLocationsSelected }) {
           onPress={(event) => handleMapPress(event.nativeEvent.coordinate)}
         >
           <Marker
-            id="yo"
-            coordinate={{
-              longitude: location.coords.longitude,
-              latitude: location.coords.latitude,
+            title='Ubicacion Elejida'
+            coordinate={{  
+              longitude: selectedLocations.longitude,
+              latitude: selectedLocations.latitude,
             }}
-            title="Miubicacion"
-            description="Donde estoy ahora"
           />
-          {selectedLocations.map((location, index) => (
-            <Marker
-              key={index}
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-              title={`Ubicación ${index + 1}`}
-            />
-          ))}
-          {markerArray.map((marker) => (
-            <Marker
-              key={marker.id}
-              coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude,
-              }}
-              title={marker.title}
-              description={marker.description}
-            />
-          ))}
-        </MapView>
-      )}
+          </MapView>
+          <TouchableOpacity onPress={ElegirUNaZona(UbicacionElegida)}>
+             <Text>Agregar ubicación</Text>
+          </TouchableOpacity>
     </View>
   );
 }

@@ -22,7 +22,7 @@ const AddZona = () => {
   const [trabajador, setTrabajador] = useState("");
   const [longitud, setLongitud] = useState("");
   const [latitud, setLatitud] = useState("");
-  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState({});
 
 
   const navigation = useNavigation();
@@ -42,12 +42,10 @@ const AddZona = () => {
 
   const handleLocationsSelected = (selectedLocations) => {
     setSelectedLocations(selectedLocations);
-    setLongitud(selectedLocations[0].coords.longitude)
-    setLatitud(selectedLocations[0].coords.latitude)
+    setLongitud(selectedLocations.longitude)
+    setLatitud(selectedLocations.latitude)
   };
   
-  
-  // ...
     
   // metodo guarde el formulario
   const addZona = () => {
@@ -165,13 +163,15 @@ const AddZona = () => {
               <MySingleButton
                 title="Seleccionar ubicación"
                 btnColor="green"
-                onPress={()=>navigation.navigate("MapaZona", { onLocationsSelected: handleLocationsSelected })}
+                onPress={()=>navigation.navigate("MapaZona")}
               />
               <MySingleButton
                 title="Registrar Zona"
                 btnColor="green"
                 onPress={addZona}
               />
+
+              <MapaZona UbicacionElegida = {handleLocationsSelected}/>
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
