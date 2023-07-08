@@ -1,145 +1,68 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Alert, View, StyleSheet, Text, ActivityIndicator } from "react-native";
-import {
-  requestForegroundPermissionsAsync,
-  getCurrentPositionAsync,
-  watchPositionAsync,
-  LocationAccuracy,
-} from "expo-location";
+import { Alert, View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { useNavigation } from "@react-navigation/native";
 
-export default function MapaZona({ onLocationsSelected }) {
-  const [location, setLocation] = useState(null);
-  const [selectedLocations, setSelectedLocations] = useState([]);
+
+export default function MapaZona({route}) {
+
+  const navigation = useNavigation();
+
   const mapRef = useRef(null);
+  //estos useState obtendran las cordenadas de la ubicacion
+  const [latitud, setLatitud] = useState(0);
+  const [longitud, setLongitud] = useState(0);
 
-  const requestForegroundPermission = async () => {
-    const { status } = await requestForegroundPermissionsAsync();
-    if (status === "granted") {
-      const currentPosition = await getCurrentPositionAsync();
-      console.log("Current position", currentPosition);
-      setLocation(currentPosition);
-    } else {
-      Alert.alert(
-        "Los permisos de localizacion son obligatorios, por favor vuelva a intentar"
-      );
-    }
-  };
+  const handleMapPress = (event) => {
+    //Recibe el evento probocado al tocar el mapa para elegir una ubicacion
+    //busca en el evento la latitud y la longitud y las agrega al UseState latitud y longitud
+    let latitude = event.nativeEvent.coordinate.latitude
+    let longitude = event.nativeEvent.coordinate.longitude
+    setLatitud(latitude);
+    setLongitud(longitude);
+  }
 
-  useEffect(() => {
-    requestForegroundPermission().then(() => console.log(location));
-  }, []);
-
-  useEffect(() => {
-    const watchLocation = async () => {
-      await watchPositionAsync(
-        {
-          accuracy: LocationAccuracy.Highest,
-          timeInterval: 5000,
-          distanceInterval: 5,
-        },
-        (newLocation) => {
-          setLocation(newLocation);
-          if (location !== newLocation) {
-            mapRef.current.animateCamera({
-              center: newLocation.coords,
-            });
-          }
-        }
-      );
-    };
-
-    watchLocation().then(() => console.log("### watching location ###"));
-  }, []);
-
-  const handleMapPress = (coordinate) => {
-    const { latitude, longitude } = coordinate;
-    const newLocation = { latitude, longitude };
-    setSelectedLocations([...selectedLocations, newLocation]);
-    onLocationsSelected([...selectedLocations, newLocation]);
-  };
-  
-  const markerArray = [
-    {
-      id: 1,
-      latitude: -32.6110783,
-      longitude: -54.7811711,
-      title: "Juan Lacaze",
-      description: "Colonia",
-    },
-    {
-      id: 2,
-      latitude: -34.455208,
-      longitude: -57.830575,
-      title: "Colonia del Sacramento",
-      description: "Colonia",
-    },
-    {
-      id: 3,
-      latitude: -32.6110783,
-      longitude: -54.7811711,
-      title: "Carmelo",
-      description: "",
-    },
-    {
-      id: 4,
-      latitude: -34.855329,
-      longitude: -56.206648,
-      title: "Montevideo",
-      description: "Montevideo - Prado",
-    },
-  ];
 
   return (
     <View style={styles.container}>
-      <Text>Cargando Mapa</Text>
-      {!location && <ActivityIndicator size="large" />}
-      {location && (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: -32.6110783,
-            longitude: -54.7811711,
-            longitudeDelta: 0.005,
-            latitudeDelta: 0.005,
+      <MapView
+        style={styles.map}
+
+        initialRegion={{
+          //latitude y longitude son las cordenadas iniciales del mapa
+          latitude:-32.6110783,
+          longitude: -54.7811711,
+          longitudeDelta: 0.005,
+          latitudeDelta: 0.005,
+        }}
+        onPress={handleMapPress}
+        ref={mapRef}
+      >
+       {/*
+        Marker es el sibolo rojo que aparece al elegir la ubicacion
+        y la posicion en la que apraece son las cordenadas del useSate latitud y longitud.
+       */}
+        <Marker
+          key={1}
+          coordinate={{
+            latitude: latitud,
+            longitude: longitud,
           }}
-          ref={mapRef}
-          onPress={(event) => handleMapPress(event.nativeEvent.coordinate)}
-        >
-          <Marker
-            id="yo"
-            coordinate={{
-              longitude: location.coords.longitude,
-              latitude: location.coords.latitude,
-            }}
-            title="Miubicacion"
-            description="Donde estoy ahora"
-          />
-          {selectedLocations.map((location, index) => (
-            <Marker
-              key={index}
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-              title={`Ubicación ${index + 1}`}
-            />
-          ))}
-          {markerArray.map((marker) => (
-            <Marker
-              key={marker.id}
-              coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude,
-              }}
-              title={marker.title}
-              description={marker.description}
-            />
-          ))}
-        </MapView>
-      )}
+          title="Zona Elegida"
+          description="Zona Elegida"
+        />
+      </MapView>
+      <TouchableOpacity 
+      //al apretar el boton navegamos a la pantalla zona, y le pasamos por parametro un objeto con atributos lat y long que son las cordenadas de la ubicacion elegida
+      onPress={() => route.params.cameFrom=="AltaZona"?
+      navigation.navigate("AltaZona",{lat:latitud, long:longitud}): navigation.navigate("ModificarZona",{lat:latitud, long:longitud})}
+      style={styles.botonMap}
+      >
+        <Text style={styles.TextButton}>Elegir Ubicacion</Text>
+      </TouchableOpacity>
     </View>
   );
+
 }
 
 const styles = StyleSheet.create({
@@ -153,4 +76,19 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
+  botonMap:{
+    width:'100%',
+    height:100,
+    backgroundColor:'#42AFA1',
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:70,
+    marginBottom:30,
+    marginTop:20
+  },
+  TextButton:{
+    fontSize:40,
+    fontWeight:"bold",
+    color:'white',
+  }
 });
