@@ -15,7 +15,7 @@ const VerTodasLasZonas = () => {
       tx.executeSql(`SELECT * FROM zonas`, [], (tx, results) => {
         console.log("results", results);
         if (results.rows.length > 0) {
-          setUsers(results.rows._array);
+          setZonas(results.rows._array);
         } else {
           Alert.alert(
             "Mensaje",
@@ -40,10 +40,10 @@ const VerTodasLasZonas = () => {
         <MyText textValue={item.lugar} textStyle={styles.textStyle} />
 
         <MyText textValue="Departamento" textStyle={styles.textStyle} />
-        <MyText textValue={item.departamento} textStyle={styles.textStyle} />
+        <MyText textValue={item.departamento.toString()} textStyle={styles.textStyle} />
 
         <MyText textValue="N° trabajadores" textStyle={styles.textStyle} />
-        <MyText textValue={item.trabajador} textStyle={styles.textStyle} />
+        <MyText textValue={item.numTrabajadores} textStyle={styles.textStyle} />
 
         <MyText textValue="Longitud" textStyle={styles.textStyle} />
         <MyText textValue={item.longitud} textStyle={styles.textStyle} />
@@ -61,7 +61,7 @@ const VerTodasLasZonas = () => {
         <View>
           <FlatList
             data={zonas}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.idZona.toString()}
             renderItem={({ item }) => listItemView(item)}
             contentContainerStyle={{ paddingHorizontal: 15 }}
           />

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import {
   StyleSheet,
   View,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Alert,
+  Text
 } from "react-native";
 import MyText from "../../components/MyText";
 import MyInputText from "../../components/MyInputText";
@@ -15,16 +16,23 @@ import DatabaseConnection from "../../database/db-connection";
 
 const db = DatabaseConnection.getConnection();
 
-const EditZona = () => {
+const EditZona = (UbicacionMapa) => {
   // estados
   const [lugarSearch, setLugarSearch] = useState("");
   const [lugar, setLugar] = useState("");
   const [departamento, setDepartamento] = useState("");
   const [trabajador, setTrabajador] = useState("");
-  const [longitud, setLongitud] = useState("");
-  const [latitud, setLatitud] = useState("");
   const navigation = useNavigation();
+  const rut = UbicacionMapa.route.params;
 
+  const [latitud, setLatitud] = useState(rut?.lat);
+  const [longitud, setLongitud] = useState(rut?.long);
+
+  //cada vez que se agrega un dato a UbicacionMapa se asignan esos datos a los useState latitud y longitud
+  useEffect(()=>{
+    setLatitud(rut?.lat);
+    setLongitud(rut?.long)
+  },[UbicacionMapa])
   // metodo para setear los estados
   const handleLugarSearch = (Lugar) => {
     console.log("### handleLugarSearch ###", Lugar);
@@ -96,14 +104,14 @@ const EditZona = () => {
     if (validateData()) {
       db.transaction((tx) => {
         tx.executeSql(
-          "UPDATE zonas set lugar=?, departamento=?, trabajador=?, longitud=?, latitud=? WHERE lugar=?",
+          "UPDATE zonas set lugar=?, departamento=?, numTrabajadores=?, longitud=?, latitud=? WHERE lugar=?",
           [lugar, departamento, trabajador, longitud, latitud, lugarSearch],
           (_, results) => {
             if (results.rowsAffected > 0) {
               clearData();
               Alert.alert("Exito", "Zona actualizada correctamente", [
                 {
-                  text: "Ok",
+                 
                   onPress: () => navigation.navigate("HomeScreen"),
                 },
                 {
@@ -133,7 +141,7 @@ const EditZona = () => {
             const zona = results.rows.item(0);
             setLugar(zona.lugar);
             setDepartamento(zona.departamento);
-            setTrabajador(zona.trabajador);
+            setTrabajador(zona.numTrabajadores);
             setLongitud(zona.longitud);
             setLatitud(zona.latitud);
           }else {
@@ -173,25 +181,23 @@ const EditZona = () => {
 
             <MyInputText 
               placeholder="Departamento"
-              value={departamento}
+              value={departamento.toString()}
               onChangeText={handleDepartamento}
             />
 
             <MyInputText 
               placeholder="N° trabajadores"
-              value={trabajador}
+              value={trabajador.toString()}
               onChangeText={handleTrabajador}
             />
-            <MyInputText 
-              placeholder="Longitud"
-              value={longitud}
-              onChangeText={handlelongitud}
+            <MySingleButton
+                title="Seleccionar ubicación"
+                btnColor="green"
+                onPress={() => navigation.navigate("MapaZona", {cameFrom:"ModificarZona"})}
             />
-            <MyInputText 
-              placeholder="Latitud"
-              value={latitud}
-              onChangeText={handleLatitud}
-            />
+             {
+                <Text style={styles.TextUbicacion}>{latitud +' '+longitud}</Text>
+              }
 
             <MySingleButton 
               title="Editar" onPress={() => editZona()} 

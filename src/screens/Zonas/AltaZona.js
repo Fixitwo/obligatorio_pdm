@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,24 +6,32 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Alert,
+  Text
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import MyInputText from "../../components/MyInputText";
 import MySingleButton from "../../components/MySingleButton";
 import DatabaseConnection from "../../database/db-connection";
 import { useNavigation } from "@react-navigation/native";
-import MapaZona from "./MapaZona";
 const db = DatabaseConnection.getConnection();
 
-const AddZona = () => {
+
+//AddZona recibe como parametro un objeto que contiene la latitud y la longitud de la pagina MapaZona
+const AddZona = (UbicacionMapa) => {
   // estados para los campos del formulario
+  const rut = UbicacionMapa.route.params;
   const [lugar, setLugar] = useState("");
   const [departamento, setDepartamento] = useState();
   const [trabajador, setTrabajador] = useState("");
-  const [longitud, setLongitud] = useState("");
-  const [latitud, setLatitud] = useState("");
-  const [selectedLocations, setSelectedLocations] = useState({});
 
+  const [latitud, setLatitud] = useState(rut?.lat);
+  const [longitud, setLongitud] = useState(rut?.long);
+
+  //cada vez que se agrega un dato a UbicacionMapa se asignan esos datos a los useState latitud y longitud
+  useEffect(()=>{
+    setLatitud(rut?.lat);
+    setLongitud(rut?.long)
+  },[UbicacionMapa])
 
   const navigation = useNavigation();
 
@@ -40,13 +48,6 @@ const AddZona = () => {
     setTrabajador(trabajador);
   };
 
-  const handleLocationsSelected = (selectedLocations) => {
-    setSelectedLocations(selectedLocations);
-    setLongitud(selectedLocations.longitude)
-    setLatitud(selectedLocations.latitude)
-  };
-  
-    
   // metodo guarde el formulario
   const addZona = () => {
     // llamar a la validacion de datos
@@ -54,11 +55,13 @@ const AddZona = () => {
     // llamar al metodo de guardar
 
     if (validateData()) {
+      console.log(longitud);
       db.transaction((tx) => {
         tx.executeSql(
           "INSERT INTO zonas (lugar, departamento, numTrabajadores, longitud, latitud) VALUES (?, ?, ?, ?, ?)",
           [lugar, departamento, trabajador, longitud, latitud],
           (tx, results) => {
+            console.log("validateData");
             if (results.rowsAffected > 0) {
               Alert.alert(
                 "Exito",
@@ -107,8 +110,8 @@ const AddZona = () => {
     setLugar("");
     setDepartamento("");
     setTrabajador("");
-    setLongitud("");
     setLatitud("");
+    setLongitud("");
   };
   // Formulario de registro de usuario
   return (
@@ -163,16 +166,23 @@ const AddZona = () => {
               <MySingleButton
                 title="Seleccionar ubicación"
                 btnColor="green"
-                onPress={()=>navigation.navigate("MapaZona")}
+                onPress={() => navigation.navigate("MapaZona",{cameFrom:"AltaZona"})}
               />
+              {
+                //comprueba si la longitud o latitud no esta definida y muestra un texto para que ingrese una Ubicacion
+                //en el caso de que ya exista ubicacion mustra la latitud y longitud
+                latitud == undefined && longitud == undefined 
+                ?<Text style={styles.TextUbicacion}>Por favor seleccione Ubicacion</Text>
+                :<Text style={styles.TextUbicacion}>{latitud +' '+longitud}</Text>
+              }
+              
               <MySingleButton
                 title="Registrar Zona"
                 btnColor="green"
                 onPress={addZona}
               />
-
-              <MapaZona UbicacionElegida = {handleLocationsSelected}/>
             </KeyboardAvoidingView>
+
           </ScrollView>
         </View>
       </View>
@@ -198,4 +208,9 @@ const styles = StyleSheet.create({
   inputTrabajador: {},
   inputLongitud: {},
   inputLatitud: {},
+  TextUbicacion:{
+    color:'black',
+    display:'flex',
+    marginLeft:30
+  }
 });
