@@ -54,7 +54,7 @@ const HomeScreen = ({ navigation }) => {
   const createDbZona=async(tx)=>{
     try{
       await tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS zonas (idZona INTEGER PRIMARY KEY AUTOINCREMENT, lugar VARCHAR(50), departamento VARCHAR(30), numTrabajadores INTEGER, longitud FLOAT, latitud FLOAT)', [],
+        'CREATE TABLE IF NOT EXISTS zonas (idZona INTEGER PRIMARY KEY AUTOINCREMENT, nombreLugar VARCHAR(50),tipoLugar VARCHAR(10), departamento VARCHAR(30), numTrabajadores INTEGER, longitud FLOAT, latitud FLOAT)', [],
       );
     }
     catch (e) {

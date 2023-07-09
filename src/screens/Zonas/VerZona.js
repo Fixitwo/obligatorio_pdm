@@ -12,7 +12,7 @@ import MyText from "../../components/MyText";
 import MyInputText from "../../components/MyInputText";
 import MySingleButton from "../../components/MySingleButton";
 import { useNavigation } from "@react-navigation/native";
-
+import { Picker } from "@react-native-picker/picker";
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
@@ -37,7 +37,7 @@ const ViewZona = () => {
 
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM zonas WHERE lugar=?",
+        "SELECT * FROM zonas WHERE nombreLugar=?",
         [lugar],
         (tx, results) => {
           console.log("Results", results.rows);
@@ -79,14 +79,14 @@ const ViewZona = () => {
               <View style={styles.presenterView}>
                 {zona ? (
                   <>
-                    <MyText textValue="id" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={zona.id.toString()} textStyle={styles.presenterText}/>
                     <MyText textValue="Nombre del lugar" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={zona.lugar} textStyle={styles.presenterText}/>
+                    <MyText textValue={zona.nombreLugar} textStyle={styles.presenterText}/>
+                    <MyText textValue="Tipo de lugar" textStyle={styles.presenterTextBold}/>
+                    <MyText textValue={zona.tipoLugar} textStyle={styles.presenterText}/>
                     <MyText textValue="Departamento" textStyle={styles.presenterTextBold}/>
                     <MyText textValue={zona.departamento} textStyle={styles.presenterText}/>
                     <MyText textValue="Trabajador" textStyle={styles.presenterTextBold}/>
-                    <MyText textValue={zona.trabajador} textStyle={styles.presenterText}/>
+                    <MyText textValue={zona.numTrabajadores} textStyle={styles.presenterText}/>
                     <MyText textValue="Longitud" textStyle={styles.presenterTextBold}/>
                     <MyText textValue={zona.longitud} textStyle={styles.presenterText}/>
                     <MyText textValue="Latitud" textStyle={styles.presenterTextBold}/>
@@ -113,6 +113,16 @@ const styles = StyleSheet.create({
   viewContainer: {
     flex: 1,
     backgroundColor: "white",
+  },
+  containerPicker: {
+    flex: 1,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 10,
+    marginBottom: 10,
+    borderColor: "#d3d3d3",
+    borderWidth: 1,
+    padding: 10,
   },
   generalView: {
     flex: 1,

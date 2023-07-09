@@ -14,21 +14,21 @@ const DeleteZona = () => {
 
   const DeleteZona = () => {
     if(!lugar && !lugar.length && lugar === ""){
-      Alert.alert("Error", "El nombre de lugar es obligatorio");
+      Alert.alert("Error", "El nombre de la zona es obligatorio");
       return false;
     }
 
     db.transaction((tx) => {
       tx.executeSql(
-        'DELETE FROM users WHERE lugar = ?',
+        'DELETE FROM zonas WHERE nombreLugar = ?',
         [lugar],
         (tx, results) => {
           console.log("Results", results.rowsAffected);
           if(results.rowsAffected > 0){
-            Alert.alert("Exito", "El lugar fue borrado correctamente", [
+            Alert.alert("Exito", "La zona fue eliminada correctamente", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
+                onPress: () => navigation.navigate("ABMZonas"),
               }
             ],
             {
@@ -36,10 +36,10 @@ const DeleteZona = () => {
             }
             );
           } else {
-            Alert.alert("Error", "El lugar no existe", [
+            Alert.alert("Error", "La zona no existe", [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
+                onPress: () => navigation.navigate("ABMZonas"),
               }
             ],
             {

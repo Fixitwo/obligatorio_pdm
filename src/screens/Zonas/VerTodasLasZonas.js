@@ -19,11 +19,11 @@ const VerTodasLasZonas = () => {
         } else {
           Alert.alert(
             "Mensaje",
-            "No hay zonas!!!",
+            "No hay zonas",
             [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
+                onPress: () => navigation.navigate("ABMZonas"),
               },
             ],
             { cancelable: false }
@@ -36,8 +36,11 @@ const VerTodasLasZonas = () => {
   const listItemView = (item) => {
     return (
       <View key={item.id} style={styles.listItemView}>
-        <MyText textValue="Nombre de lugar" textStyle={styles.textStyle} />
-        <MyText textValue={item.lugar} textStyle={styles.textStyle} />
+        <MyText textValue="Nombre del lugar" textStyle={styles.textStyle} />
+        <MyText textValue={item.nombreLugar} textStyle={styles.textStyle} />
+
+        <MyText textValue="Tipo de lugar" textStyle={styles.textStyle} />
+        <MyText textValue={item.tipoLugar} textStyle={styles.textStyle} />
 
         <MyText textValue="Departamento" textStyle={styles.textStyle} />
         <MyText textValue={item.departamento.toString()} textStyle={styles.textStyle} />

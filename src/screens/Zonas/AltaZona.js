@@ -20,7 +20,8 @@ const db = DatabaseConnection.getConnection();
 const AddZona = (UbicacionMapa) => {
   // estados para los campos del formulario
   const rut = UbicacionMapa.route.params;
-  const [lugar, setLugar] = useState("");
+  const [nombreLugar, setNombreLugar] = useState("");
+  const [tipoLugar, setTipoLugar] = useState("");
   const [departamento, setDepartamento] = useState();
   const [trabajador, setTrabajador] = useState("");
 
@@ -36,8 +37,11 @@ const AddZona = (UbicacionMapa) => {
   const navigation = useNavigation();
 
   // metodo para setear los estados
-  const handleLugar = (lugar) => {
-    setLugar(lugar);
+  const handleNombreLugar = (nombreLugar) => {
+    setNombreLugar(nombreLugar);
+  };
+  const handleTipoLugar = (tipoLugar) => {
+    setTipoLugar(tipoLugar);
   };
 
   const handleDepartamento = (departamento) => {
@@ -58,14 +62,14 @@ const AddZona = (UbicacionMapa) => {
       console.log(longitud);
       db.transaction((tx) => {
         tx.executeSql(
-          "INSERT INTO zonas (lugar, departamento, numTrabajadores, longitud, latitud) VALUES (?, ?, ?, ?, ?)",
-          [lugar, departamento, trabajador, longitud, latitud],
+          "INSERT INTO zonas (nombreLugar,tipoLugar, departamento, numTrabajadores, longitud, latitud) VALUES (?, ?, ?, ?, ?, ?)",
+          [nombreLugar,tipoLugar, departamento, trabajador, longitud, latitud],
           (tx, results) => {
             console.log("validateData");
             if (results.rowsAffected > 0) {
               Alert.alert(
                 "Exito",
-                "Zona registrado correctamente",
+                "Zona registrada correctamente",
                 [
                   {
                     text: "Ok",
@@ -88,8 +92,13 @@ const AddZona = (UbicacionMapa) => {
 
   // metodo validar datos
   const validateData = () => {
-    if (lugar === "" && !lugar.trim()) {
-      Alert.alert("Error", "El lugar es obligatorio");
+    if (nombreLugar === "" && !nombreLugar.trim()) {
+      Alert.alert("Error", "El nombre del lugar es obligatorio");
+      return false;
+    }
+
+    if (tipoLugar === "" && !tipoLugar.trim()) {
+      Alert.alert("Error", "El tipo de lugar es obligatorio");
       return false;
     }
 
@@ -107,7 +116,8 @@ const AddZona = (UbicacionMapa) => {
 
   //  clear de los datos
   const clearData = () => {
-    setLugar("");
+    setNombreLugar("");
+    setTipoLugar("");
     setDepartamento("");
     setTrabajador("");
     setLatitud("");
@@ -120,20 +130,33 @@ const AddZona = (UbicacionMapa) => {
         <View>
           <ScrollView>
             <KeyboardAvoidingView>
-              <MyInputText
+            <MyInputText
                 styles={styles.inputLugar}
                 placeholder="Nombre de Lugar"
-                onChangeText={handleLugar}
-                value={lugar}
+                onChangeText={handleNombreLugar}
+                value={nombreLugar}
               />
+            <View style={styles.container}>
+                <Picker
+                  placeholder="Tipo de Lugar"
+                  selectedValue={tipoLugar}
+                  style={{ maxLength: 40, minLength: 0 }}
+                  onValueChange={(itemValue) => handleTipoLugar(itemValue)}
+                >
+                  <Picker.Item label="Seleccione un lugar" value="" />
+                  <Picker.Item label="Estancia" value="Estancia" />
+                  <Picker.Item label="Quinta" value="Quinta" />
+                  <Picker.Item label="Plantación" value="Plantación" />
+                </Picker>
+              </View>
               <View style={styles.container}>
                 <Picker
                   placeholder="Nombre del Departamento"
                   selectedValue={departamento}
                   style={{ maxLength: 40, minLength: 0 }}
                   onValueChange={(itemValue) => handleDepartamento(itemValue)}
-                  prompt="Departamento"
                 >
+                  <Picker.Item label="Seleccione departamento" value="" />
                   <Picker.Item label="Artigas" value="Artigas" />
                   <Picker.Item label="Canelones" value="Canelones" />
                   <Picker.Item label="Cerro Largo" value="Cerro Largo" />
