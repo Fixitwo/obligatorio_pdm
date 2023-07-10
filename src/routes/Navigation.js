@@ -34,6 +34,8 @@ import ModificarObservacion from "../screens/Observaciones/ModificarObservacion"
 //import VerObservacion from "../screens/Observaciones/ModificarObservacion"
 //import VerTodasLasObservaciones from "../screens/Observaciones/VerTodasLasObservaciones"
 
+import ABMTratamientos from "../screens/ABMTratamientos"
+import AñadirTratamiento from "../screens/Tratamientos/AltaTratamiento";
 
 const Navigation = () => {
   return (
@@ -422,6 +424,34 @@ const Navigation = () => {
           }}
         />
         */}
+        <Stack.Screen
+          name="ABMTratamientos"
+          component={ABMTratamientos}
+          options={{
+            title: "ABM Tratamientos",
+            headerStyle: {
+              backgroundColor: "#00C14A",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="AltaTratamiento"
+          component={AñadirTratamiento}
+          options={{
+            title: "Alta Tratamiento",
+            headerStyle: {
+              backgroundColor: "#00C14A",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

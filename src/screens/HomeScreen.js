@@ -248,6 +248,12 @@ return (
               btnIcon="clipboard"
               onPress={() => navigation.navigate("ABMObservaciones")}
             />
+            <MyButton
+              title="ABM Tratamientos"
+              btnColor="lightblue"
+              btnIcon="medkit"
+              onPress={() => navigation.navigate("ABMTratamientos")}
+            />
           </View>
         </ScrollView>
       </View>

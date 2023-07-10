@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, SafeAreaView, FlatList, Alert } from "react-native";
 import MyText from "../../components/MyText";
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../../../AppContext";
 
 const ViewAllUsers = () => {
   // definir un estado local, para guardar los usuarios
   const [users, setUsers] = useState([]);
+  const{listaUsuarios, setListaUsuarios} = useContext(AppContext)
   const navigation = useNavigation();
   // useEffect para cargar los usuarios
   useEffect(() => {
@@ -16,6 +18,7 @@ const ViewAllUsers = () => {
         console.log("results", results);
         if (results.rows.length > 0) {
           setUsers(results.rows._array);
+          setListaUsuarios(results.rows._array)
         } else {
           Alert.alert(
             "Mensaje",

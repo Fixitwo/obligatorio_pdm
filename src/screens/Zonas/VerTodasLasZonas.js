@@ -1,37 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, SafeAreaView, FlatList, Alert } from "react-native";
 import MyText from "../../components/MyText";
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../../../AppContext";
 
-const VerTodasLasZonas = () => {
-  // definir un estado local, para guardar los usuarios
-  const [zonas, setZonas] = useState([]);
+export const VerTodasLasZonas = () => {
+  // definir un estado local, para guardar las zonas
+  const [zonas, setZonas] = useState([])
+  const{listaZonas, setListaZonas} = useContext(AppContext)
   const navigation = useNavigation();
-  // useEffect para cargar los usuarios
+  // useEffect para cargar las zonas
   useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql(`SELECT * FROM zonas`, [], (tx, results) => {
-        console.log("results", results);
-        if (results.rows.length > 0) {
-          setZonas(results.rows._array);
-        } else {
-          Alert.alert(
-            "Mensaje",
-            "No hay zonas",
-            [
-              {
-                text: "Ok",
-                onPress: () => navigation.navigate("ABMZonas"),
-              },
-            ],
-            { cancelable: false }
-          );
-        }
-      });
+      try {
+        tx.executeSql(`SELECT * FROM zonas`, [], (tx, results) => {
+          console.log("results", results);
+          if (results.rows.length > 0) {
+            setZonas(results.rows._array);
+            setListaZonas(results.rows._array)
+          } else {
+            Alert.alert(
+              "Mensaje",
+              "No hay zonas",
+              [
+                {
+                  text: "Ok",
+                  onPress: () => navigation.navigate("ABMZonas"),
+                },
+              ],
+              { cancelable: false }
+            );
+          }
+        });
+      } catch (error) {
+        console.error("Error executing SQL:", error);
+      }
     });
   }, []);
+  
 
   const listItemView = (item) => {
     return (

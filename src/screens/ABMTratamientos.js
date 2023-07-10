@@ -4,12 +4,12 @@ import MyButton from "../components/MyButton";
 import DatabaseConnection from "../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
-const ABMObservaciones = ({ navigation }) => {
+const ABMTratamientos = ({ navigation }) => {
 
   useEffect(() => {
     db.transaction((txn) => {
       txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='observaciones'", [],
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='tratamientos'", [],
         (_, results) => {
           if(results.rows.length == 0){
           } else {
@@ -27,38 +27,38 @@ const ABMObservaciones = ({ navigation }) => {
           <ScrollView>
             <View>
               <MyButton
-                title="Alta Observacion"
+                title="Alta Tratamiento"
                 btnColor="green"
                 btnIcon="user-plus"
-                onPress={() => navigation.navigate("AltaObservacion")}
+                onPress={() => navigation.navigate("AltaTratamiento", {})}
               />
 
               <MyButton
-                title="Modificar Observacion"
+                title="Modificar Tratamiento"
                 btnColor="orange"
                 btnIcon="user-circle"
                 onPress={() => navigation.navigate("ModificarOservacion")}
               />
 
               <MyButton
-                title="Baja Observacion"
+                title="Baja Tratamiento"
                 btnColor="red"
                 btnIcon="user-times"
-                onPress={() => navigation.navigate("BajaObservacion")}
+                onPress={() => navigation.navigate("BajaTratamiento")}
               />
 
               <MyButton
-                title="Ver Observacion"
+                title="Ver Tratamiento"
                 btnColor="blue"
                 btnIcon="user-circle-o"
-                onPress={() => navigation.navigate("VerObservacion")}
+                onPress={() => navigation.navigate("VerTratamiento")}
               />
 
               <MyButton
-                title="Ver todas las observaciones"
+                title="Ver todos los Tratamientos"
                 btnColor="purple"
                 btnIcon="users"
-                onPress={() => navigation.navigate("VerTodasLasObservaciones")}
+                onPress={() => navigation.navigate("VerTodosLosTratamientos")}
               />
             </View>
           </ScrollView>
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ABMObservaciones;
+export default ABMTratamientos;

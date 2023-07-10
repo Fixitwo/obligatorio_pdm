@@ -1,32 +1,29 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, SafeAreaView, FlatList, Alert } from "react-native";
 import MyText from "../../components/MyText";
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 import { useNavigation } from "@react-navigation/native";
-import { AppContext } from "../../../AppContext";
 
-const VerTodosLosInsumos = () => {
-  // definir un estado local, para guardar los insumos
-  const [Insumos, setInsumos] = useState([]);
-  const {listaInsumos, setListaInsumos} = useContext(AppContext)
+const ViewAllUsers = () => {
+  // definir un estado local, para guardar los tratamientos
+  const [users, setUsers] = useState([]);
   const navigation = useNavigation();
-  // useEffect para cargar los insumos
+  // useEffect para cargar los tratamientos
   useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql(`SELECT * FROM insumos`, [], (tx, results) => {
+      tx.executeSql(`SELECT * FROM tratamientos`, [], (tx, results) => {
         console.log("results", results);
         if (results.rows.length > 0) {
-          setInsumos(results.rows._array);
-          setListaInsumos(results.rows._array)
+          setUsers(results.rows._array);
         } else {
           Alert.alert(
             "Mensaje",
-            "No hay insumos",
+            "No hay tratamientos",
             [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("ABMInsumos"),
+                onPress: () => navigation.navigate("ABMTratamientos"),
               },
             ],
             { cancelable: false }
@@ -38,12 +35,12 @@ const VerTodosLosInsumos = () => {
 
   const listItemView = (item) => {
     return (
-      <View key={item.idInsumo} style={styles.listItemView}>
+      <View key={item.id} style={styles.listItemView}>
         <MyText textValue="Nombre" textStyle={styles.textStyle} />
-        <MyText textValue={item.nomIns} textStyle={styles.textStyle} />
+        <MyText textValue={item.nombre +" "+ item.apellido} textStyle={styles.textStyle} />
 
-        <MyText textValue="Cantidad en litros" textStyle={styles.textStyle} />
-        <MyText textValue={item.cantidad} textStyle={styles.textStyle} />
+        <MyText textValue="Cédula de identidad" textStyle={styles.textStyle} />
+        <MyText textValue={item.cedula} textStyle={styles.textStyle} />
       </View>
     );
   };
@@ -53,8 +50,8 @@ const VerTodosLosInsumos = () => {
       <View>
         <View>
           <FlatList
-            data={Insumos}
-            keyExtractor={(item) => item.idInsumo.toString()}
+            data={users}
+            keyExtractor={(item) => item.idUsuario.toString()}
             renderItem={({ item }) => listItemView(item)}
             contentContainerStyle={{ paddingHorizontal: 15 }}
           />
@@ -64,7 +61,7 @@ const VerTodosLosInsumos = () => {
   );
 };
 
-export default VerTodosLosInsumos;
+export default ViewAllUsers;
 
 const styles = StyleSheet.create({
   container: {

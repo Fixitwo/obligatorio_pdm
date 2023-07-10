@@ -25,7 +25,7 @@ export default function ImagenPicker({callback}) {
   
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Button buttonStyle={{backgroundColor:"yellow"}}  title="Eliga una imagen" onPress={pickImage} />
+        <Button buttonStyle={{backgroundColor:"yellow"}}  title="Seleccione una imagen" onPress={pickImage} />
       </View>
     );
   }
