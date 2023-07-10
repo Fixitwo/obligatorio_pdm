@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
     tx.executeSql('DROP TABLE IF EXISTS usuarios', []);
     }
     catch(e){
-      console.log("No se ah podido eliminar el usuario");
+      console.log("No se ha podido eliminar el usuario");
     }
   };
 
@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
     tx.executeSql('DROP TABLE IF EXISTS zonas', []);
     }
     catch(e){
-      console.log("No se ah podido eliminar la zona",e)
+      console.log("No se ha podido eliminar la zona",e)
     }
   };
 
@@ -33,10 +33,19 @@ const HomeScreen = ({ navigation }) => {
     tx.executeSql('DROP TABLE IF EXISTS insumos', []);
     }
     catch(e){
-      console.log("No se ah podido eliminar el insumo",e);
+      console.log("No se ha podido eliminar el insumo",e);
     }
   };
 
+  const dropDbTratamiento = async(tx) => {
+    try{
+    console.log("Elimino Tratamiento");
+    tx.executeSql('DROP TABLE IF EXISTS tratamientos', []);
+    }
+    catch(e){
+      console.log("No se ha podido eliminar el tratamiento",e);
+    }
+  };
  
   const createDbUsuario = async(tx) => {
     try{
@@ -58,9 +67,8 @@ const HomeScreen = ({ navigation }) => {
       );
     }
     catch (e) {
-      console.log("error a crear tabla zonas", e)
+      console.log("Error a crear tabla zonas", e)
     }
-    
   }
 
   const createDbInsumo =async (tx) => {
@@ -72,7 +80,17 @@ const HomeScreen = ({ navigation }) => {
     );
     }
     catch (e){
-        console.log("Eror al crear la tabla insumo", e);
+        console.log("Error al crear la tabla insumo", e);
+    }
+  };
+  const createDbTratamiento =async (tx) => {
+    try{
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS tratamientos (idTratamiento INTEGER PRIMARY KEY, nomTratamiento VARCHAR(50), zonaTratamiento VARCHAR(50) REFERENCES zonas(nombreLugar), usuarioTratamiento VARCHAR(50) REFERENCES usuarios(nombre), fechaInicio DATE, fechaFin DATE, tiempo INTEGER, insumoTratamiento VARCHAR(50) REFERENCES insumos(nomIns), observacionesTratamiento VARCHAR(100) REFERENCES observaciones(titulo)", [],
+    );
+    }
+    catch (e){
+        console.log("Error al crear la tabla insumo", e);
     }
   };
   
@@ -136,6 +154,25 @@ const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
+  useEffect(() => {
+    db.transaction((txn) => {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='tratamientos'", [],
+        (_, results) => {
+          if (results.rows.length === 0) {
+            dropDbTratamiento(txn);
+            createDbTratamiento(txn);
+            console.log("Creo tratamiento");
+          } else {
+            console.log("Table already exists");
+            // TODO: Descomentar si quieres volver a borrar y recrear la tabla
+            dropDbTratamiento(txn);
+            createDbTratamiento(txn);
+          }
+        },
+      );
+    });
+  }, []);
 
 return (
   <SafeAreaView style={styles.container}>
