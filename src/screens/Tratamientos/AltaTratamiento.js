@@ -6,11 +6,14 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Alert,
+  Text,
+  Button,
 } from "react-native";
 
 import MyInputText from "../../components/MyInputText";
-import MySingleButton from "../../components/MySingleButton";
 import DatabaseConnection from "../../database/db-connection";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import FilePicker from "../../components/SelectorDocumentos";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../../../AppContext";
@@ -22,11 +25,25 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
   const [nombre, setNombre] = useState("");
   const [zona, setZona] = useState("");
   const [usuario, setUsuario] = useState("");
-  const [fechaInicio, setFechaInicio] = useState("");
-  const [fechaFin, setFechaFin] = useState("");
+  const [fechaInicio, setFechaInicio] = useState(new Date(1598051730000));
+  const [fechaFin, setFechaFin] = useState(new Date(1598051730000));
   const [tiempo, setTiempo] = useState("");
+  const [orden, setOrden] = useState(null);
   const [insumo, setInsumo] = useState("");
   const [observaciones, setObservaciones] = useState("");
+
+  //estados del selector de fechas
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
 
   const { listaUsuarios, listaZonas, listaInsumos, listaObservaciones } =
     useContext(AppContext);
@@ -46,11 +63,18 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
   const handleUsuario = (usuario) => {
     setUsuario(usuario);
   };
-  const handleFechaInicio = (fechaInicio) => {
-    setFechaInicio(fechaInicio);
+  const handleFechaInicio = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setFechaInicio(currentDate);
   };
-  const handleFechaFin = (fechaFin) => {
-    setFechaFin(fechaFin);
+  const handleFechaFin = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setFechaFin(currentDate);
+  };
+  const handleOrden = (orden) => {
+    setOrden(orden);
   };
   const handleTiempo = (tiempo) => {
     setTiempo(tiempo);
@@ -182,8 +206,13 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
                 value={nombre}
               />
               <View style={styles.containerPicker}>
-                <Picker>
-                <Picker.Item label="Seleccione una zona" value="" />
+                <Picker
+                  placeholder="Zona del tratamiento"
+                  selectedValue={zona}
+                  style={{ maxLength: 40, minLength: 0 }}
+                  onValueChange={(itemValue) => handleZona(itemValue)}
+                >
+                  <Picker.Item label="Seleccione una zona" value="" />
                   {listaZonas.map((zona) => (
                     <Picker.Item
                       key={zona.idZona}
@@ -194,8 +223,13 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
                 </Picker>
               </View>
               <View style={styles.containerPicker}>
-                <Picker>
-                <Picker.Item label="Seleccione un usuario" value="" />
+                <Picker
+                  placeholder="Usuario"
+                  selectedValue={usuario}
+                  style={{ maxLength: 40, minLength: 0 }}
+                  onValueChange={(itemValue) => handleUsuario(itemValue)}
+                >
+                  <Picker.Item label="Seleccione un usuario" value="" />
                   {listaUsuarios.map((user) => (
                     <Picker.Item
                       key={user.idUsuario}
@@ -205,9 +239,54 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
                   ))}
                 </Picker>
               </View>
+              <View style={styles.inputDate}>
+                <Button
+                  onPress={showDatepicker}
+                  title="Seleccionar fecha de inicio"
+                />
+                <Text>{fechaInicio.toLocaleDateString()}</Text>
+                {show && (
+                  <DateTimePicker
+                    testID="fechaInicioPicker"
+                    value={fechaInicio}
+                    mode={mode}
+                    is24Hour={true}
+                    onChange={handleFechaInicio}
+                  />
+                )}
+                <Button
+                  onPress={showDatepicker}
+                  title="Seleccionar fecha de fin"
+                />
+                <Text>{fechaFin.toLocaleDateString()}</Text>
+                {show && (
+                  <DateTimePicker
+                    testID="fechaFinPicker"
+                    value={fechaFin}
+                    mode={mode}
+                    is24Hour={true}
+                    onChange={handleFechaFin}
+                  />
+                )}
+              </View>
+                <MyInputText
+                  styles={styles.inputUser}
+                  placeholder="Tiempo (Horas de ejecución)"
+                  onChangeText={handleTiempo}
+                  value={tiempo}
+                  keyboardType="numeric"
+                />
+              <View style={styles.inputDate}>
+                <FilePicker callback={handleOrden} />
+              </View>
               <View style={styles.containerPicker}>
-                <Picker>
-                <Picker.Item label="Seleccione un insumo" value="" />
+                <Picker
+                  placeholder="Insumo"
+                  selectedValue={insumo}
+                  style={{ maxLength: 40, minLength: 0 }}
+                  onValueChange={(itemValue) => handleInsumo(itemValue)}
+                >
+                  <Picker.Item label="Seleccione un insumo" value="" />
                   {listaInsumos.map((insumo) => (
                     <Picker.Item
                       key={insumo.idInsumo}
@@ -238,6 +317,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
-  inputUser: {},
-  inputPassword: {},
+  inputDate: {
+    flex: 1,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 10,
+    marginBottom: 10,
+  },
 });

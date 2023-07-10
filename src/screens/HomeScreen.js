@@ -96,11 +96,11 @@ const HomeScreen = ({ navigation }) => {
   const createDbTratamiento =async (tx) => {
     try{
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS tratamientos (idTratamiento INTEGER PRIMARY KEY, nomTratamiento VARCHAR(50), zonaTratamiento VARCHAR(50) REFERENCES zonas(nombreLugar), usuarioTratamiento VARCHAR(50) REFERENCES usuarios(nombre), fechaInicio DATE, fechaFin DATE, tiempo INTEGER, insumoTratamiento VARCHAR(50) REFERENCES insumos(nomIns), observacionesTratamiento VARCHAR(100) REFERENCES observaciones(titulo)", [],
+      "CREATE TABLE IF NOT EXISTS tratamientos (idTratamiento INTEGER PRIMARY KEY, nomTratamiento VARCHAR(50), zonaTratamiento INTEGER REFERENCES zonas(idZona), usuarioTratamiento INTEGER REFERENCES usuarios(idUsuario), fechaInicio DATE, fechaFin DATE, tiempo INTEGER, insumoTratamiento INTEGER REFERENCES insumos(idInsumo), observacionesTratamiento INTEGER REFERENCES observaciones(idObservacion)", [],
     );
     }
     catch (e){
-        console.log("Error al crear la tabla insumo", e);
+        console.log("Error al crear la tabla tratamientos", e);
     }
   };
   const createDbObservacion =async (tx) => {
