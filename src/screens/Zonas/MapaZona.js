@@ -54,8 +54,18 @@ export default function MapaZona({route}) {
       </MapView>
       <TouchableOpacity 
       //al apretar el boton navegamos a la pantalla zona, y le pasamos por parametro un objeto con atributos lat y long que son las cordenadas de la ubicacion elegida
-      onPress={() => route.params.cameFrom=="AltaZona"?
-      navigation.navigate("AltaZona",{lat:latitud, long:longitud}): navigation.navigate("ModificarZona",{lat:latitud, long:longitud})}
+      onPress={() => { 
+              
+        if(route.params.cameFrom=="AltaZona"){
+          navigation.navigate("AltaZona",{lat:latitud, long:longitud})
+        }
+        if(route.params.cameFrom=="ModificarZona"){
+          navigation.navigate("ModificarZona",{lat:latitud, long:longitud})
+        }
+        if(route.params.cameFrom=="AltaObservacion"){
+          navigation.navigate("AltaObservacion",{lat:latitud, long:longitud})
+        }
+      }}
       style={styles.botonMap}
       >
         <Text style={styles.TextButton}>Elegir Ubicacion</Text>

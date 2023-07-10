@@ -3,6 +3,7 @@ import { View, SafeAreaView, ScrollView, Text, StyleSheet } from "react-native";
 import MyButton from "../components/MyButton";
 import DatabaseConnection from "../database/db-connection";
 
+
 const db = DatabaseConnection.getConnection();
 
 const HomeScreen = ({ navigation }) => {
@@ -34,6 +35,15 @@ const HomeScreen = ({ navigation }) => {
     }
     catch(e){
       console.log("No se ah podido eliminar el insumo",e);
+    }
+  };
+  const dropDbObservacion = async(tx) => {
+    try{
+    console.log("Elimino Observacion");
+    tx.executeSql('DROP TABLE IF EXISTS observaciones', []);
+    }
+    catch(e){
+      console.log("No se ah podido eliminar la observacion",e);
     }
   };
 
@@ -73,6 +83,17 @@ const HomeScreen = ({ navigation }) => {
     }
     catch (e){
         console.log("Eror al crear la tabla insumo", e);
+    }
+  };
+  const createDbObservacion =async (tx) => {
+    try{
+    console.log("Creo observacion");
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS observaciones (idObservacion INTEGER PRIMARY KEY AUTOINCREMENT, titulo VARCHAR(50), imagen VARCHAR(300), longitud FLOAT, latitud FLOAT)", [],
+    );
+    }
+    catch (e){
+        console.log("Eror al crear la tabla observacion", e);
     }
   };
   
@@ -128,8 +149,28 @@ const HomeScreen = ({ navigation }) => {
           } else {
             console.log("Table already exists");
             // TODO: Descomentar si quieres volver a borrar y recrear la tabla
-            dropDbZona(txn);
-            createDbZona(txn);
+            dropDbInsumo(txn);
+            createDbInsumo(txn);
+          }
+        },
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    db.transaction((txn) => {
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='observaciones'", [],
+        (_, results) => {
+          if (results.rows.length === 0) {
+            dropDbObservacion(txn);
+            createDbObservacion(txn);
+            console.log("Creo Observacion");
+          } else {
+            console.log("Table already exists");
+            // TODO: Descomentar si quieres volver a borrar y recrear la tabla
+            dropDbObservacion(txn);
+            createDbObservacion(txn);
           }
         },
       );
@@ -152,16 +193,23 @@ return (
 
             <MyButton
               title="ABM Zonas"
-              btnColor="orange"
-              btnIcon="user-circle"
+              btnColor="blue"
+              btnIcon="map"
               onPress={() => navigation.navigate("ABMZonas")}
             />
 
             <MyButton
               title="ABM Insumos"
               btnColor="orange"
-              btnIcon="user-circle"
+              btnIcon="list"
               onPress={() => navigation.navigate("ABMInsumos")}
+            />
+
+            <MyButton
+              title="ABM Observaciones"
+              btnColor="red"
+              btnIcon="clipboard"
+              onPress={() => navigation.navigate("ABMObservaciones")}
             />
           </View>
         </ScrollView>
