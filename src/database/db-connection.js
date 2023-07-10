@@ -37,6 +37,37 @@ const DatabaseConnection = {
             )
         });
     },
+    insertInsumo: (nomIns, cantidad) => {
+        const db = getConnection();
+        db.transaction((tx) => {
+            tx.executeSql(
+                'INSERT INTO insumos (nomIns, cantidad) VALUES (?, ?)',
+                [nomIns, cantidad],
+                (tx, results) => {
+                    if(results.rowsAffected > 0){
+                        return results.rowsAffected;
+                    }
+                    return 0;
+                }
+            )
+        });
+    },
+
+    insertObservacion: (titulo, imagen,  longitud, latitud) => {
+        const db = getConnection();
+        db.transaction((tx) => {
+            tx.executeSql(
+                'INSERT INTO observaciones (titulo, imagen, longitud, latitud) VALUES (?, ?, ?, ?)',
+                [titulo, imagen,  longitud, latitud],
+                (tx, results) => {
+                    if(results.rowsAffected > 0){
+                        return results.rowsAffected;
+                    }
+                    return 0;
+                }
+            )
+        });
+    },
 }
 
 export default DatabaseConnection;
