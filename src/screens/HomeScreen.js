@@ -93,6 +93,19 @@ const HomeScreen = ({ navigation }) => {
         console.log("Error al crear la tabla insumo", e);
     }
   };
+
+  const createDbObservacion =async (tx) => {
+    try{
+    console.log("Creo observacion");
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS observaciones (idObservacion INTEGER PRIMARY KEY, titulo VARCHAR(50), imagen VARCHAR(300), longitud FLOAT, latitud FLOAT)", [],
+    );
+    }
+    catch (e){
+        console.log("Eror al crear la tabla observacion", e);
+    }
+  };
+
   const createDbTratamiento =async (tx) => {
     try{
     tx.executeSql(
@@ -101,17 +114,6 @@ const HomeScreen = ({ navigation }) => {
     }
     catch (e){
         console.log("Error al crear la tabla tratamientos", e);
-    }
-  };
-  const createDbObservacion =async (tx) => {
-    try{
-    console.log("Creo observacion");
-    tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS observaciones (idObservacion INTEGER PRIMARY KEY AUTOINCREMENT, titulo VARCHAR(50), imagen VARCHAR(300), longitud FLOAT, latitud FLOAT)", [],
-    );
-    }
-    catch (e){
-        console.log("Eror al crear la tabla observacion", e);
     }
   };
   

@@ -29,10 +29,9 @@ import VerTodosLosInsumos from"../screens/Insumos/VerTodosLosInsumos";
 
 import ABMObservaciones from "../screens/ABMObservaciones"
 import AddObservacion from "../screens/Observaciones/AltaObservacion"
-//import BajaObservacion from "../screens/Observaciones/BajaObservacion"
+import BajaObservacion from "../screens/Observaciones/BajaObservacion"
 import ModificarObservacion from "../screens/Observaciones/ModificarObservacion"
-//import VerObservacion from "../screens/Observaciones/ModificarObservacion"
-//import VerTodasLasObservaciones from "../screens/Observaciones/VerTodasLasObservaciones"
+import VerTodasLasObservaciones from "../screens/Observaciones/VerTodasLasObservaciones"
 
 import ABMTratamientos from "../screens/ABMTratamientos"
 import AñadirTratamiento from "../screens/Tratamientos/AltaTratamiento";
@@ -363,7 +362,7 @@ const Navigation = () => {
             },
           }}
         />
-        {/*
+        
         <Stack.Screen
           name="BajaObservacion"
           component={BajaObservacion}
@@ -378,7 +377,6 @@ const Navigation = () => {
             },
           }}
         />
-        */}
         <Stack.Screen
           name="ModificarObservacion"
           component={ModificarObservacion}
@@ -393,27 +391,13 @@ const Navigation = () => {
             },
           }}
         />
-        {/*}
-        <Stack.Screen
-          name="VerObservacion"
-          component={VerObservacion}
-          options={{
-            title: "Alta Observacion",
-            headerStyle: {
-              backgroundColor: "#00C14A",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        />
+        
         
         <Stack.Screen
           name="VerTodasLasObservaciones"
           component={VerTodasLasObservaciones}
           options={{
-            title: "Alta Observacion",
+            title: "Ver Todas Las Observaciones",
             headerStyle: {
               backgroundColor: "#00C14A",
             },
@@ -423,7 +407,7 @@ const Navigation = () => {
             },
           }}
         />
-        */}
+      
         <Stack.Screen
           name="ABMTratamientos"
           component={ABMTratamientos}

@@ -65,6 +65,9 @@ export default function MapaZona({route}) {
         if(route.params.cameFrom=="AltaObservacion"){
           navigation.navigate("AltaObservacion",{lat:latitud, long:longitud})
         }
+        if(route.params.cameFrom=="ModificarObservacion"){
+          navigation.navigate("ModificarObservacion",{lat:latitud, long:longitud})
+        }
       }}
       style={styles.botonMap}
       >
