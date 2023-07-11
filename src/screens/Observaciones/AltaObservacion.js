@@ -22,6 +22,7 @@ const db = DatabaseConnection.getConnection();
 
 const AddObservacion = (UbicacionMapa) => {
   // estados para los campos del formulario
+  const [id ,setId]=useState("");
   const [titulo, setTitulo] = useState("");
   const [imagen, setImagen] = useState(null);
   const [longitud,setLongitud]=useState("");
@@ -36,6 +37,10 @@ const AddObservacion = (UbicacionMapa) => {
   const navigation = useNavigation();
 
   // metodo para setear los estados
+  const handleId= (id) => {
+    setId(id);
+  }
+
   const handleTitulo= (titulo) => {
     setTitulo(titulo);
   }
@@ -56,8 +61,8 @@ const AddObservacion = (UbicacionMapa) => {
       // llamar a la db y guarar los datos
       db.transaction((tx) => {
         tx.executeSql(
-          'INSERT INTO observaciones (titulo, imagen, longitud, latitud) VALUES (?, ?, ?, ?)',
-          [titulo, imagen, longitud, latitud],
+          'INSERT INTO observaciones (idObservacion,titulo, imagen, longitud, latitud) VALUES (?, ?, ?, ?, ?)',
+          [id,titulo, imagen, longitud, latitud],
           (tx, result) => {
             console.log("### save observacion 2 ###");
             if(result.rowsAffected > 0){
@@ -83,7 +88,14 @@ const AddObservacion = (UbicacionMapa) => {
   }
 
   // metodo validar datos
+
+  
   const validateData = () => {
+    if(id === "" && !id.trim()){
+      Alert.alert("Error", "El id de la observacion es obligatorio");
+      return false;
+    }
+
     if(titulo === "" && !titulo.trim()){
       Alert.alert("Error", "El titulo de la observacion es obligatoria");
       return false;
@@ -99,6 +111,7 @@ const AddObservacion = (UbicacionMapa) => {
 
   //  clear de los datos
   const clearData = () => {
+    setId("");
     setTitulo("");
     setImagen("");
     setLongitud("");
@@ -111,7 +124,13 @@ const AddObservacion = (UbicacionMapa) => {
         <View>
           <ScrollView>
             <KeyboardAvoidingView>
-              
+            <MyInputText
+                  styles={styles.inputUser}
+                  placeholder="Id de la Observacion"
+                  onChangeText={handleId}
+                  value={id}
+                  keyboardType="numeric"
+                />
             <View style={styles.container}>
                 <Picker
                   placeholder="Titulo"
@@ -125,13 +144,14 @@ const AddObservacion = (UbicacionMapa) => {
                   <Picker.Item label="Falta de riego" value="Falta de riego" />
 
                 </Picker>
-              </View>
+            </View>
                 <MySingleButton
                 title="Seleccionar ubicación"
                 btnColor="green"
                 onPress={() => navigation.navigate("MapaZona",{cameFrom:"AltaObservacion"})}
                 />
-                <Text style={styles.TextUbicaccion}>{latitud} {longitud}</Text>
+                <Text style={styles.TextUbicacion}>{latitud} {longitud}</Text>
+                
                 <ImagenPicker callback = {handleImagen}/>
                 {console.log("#####Imagen",imagen)}
                 {imagen !== null && <Image source={{uri: imagen}} style= {{width: 100,height:100, marginLeft:155, marginTop:10}}/>}
@@ -163,10 +183,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
       },
+      
   inputNomIns:{},
   inputCantidad:{},
-  TextUbicaccion:{
+
+  TextUbicacion:{
     color:'black',
+    display:'flex',
     marginLeft:30
   }
 });

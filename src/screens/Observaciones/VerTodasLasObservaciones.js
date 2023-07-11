@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, SafeAreaView, FlatList, Alert } from "react-native";
+import { StyleSheet, View, SafeAreaView, FlatList, Alert, Image } from "react-native";
 import MyText from "../../components/MyText";
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 import { useNavigation } from "@react-navigation/native";
+import ImagenPicker from "../../components/SelectorImagen";
 
-const VerTodasLasZonas = () => {
+const VerTodasLasObservaciones = () => {
   // definir un estado local, para guardar los usuarios
   const [observaciones, setObservaciones] = useState([]);
   const navigation = useNavigation();
   // useEffect para cargar los usuarios
   useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql(`SELECT * FROM zonas`, [], (tx, results) => {
+      tx.executeSql(`SELECT * FROM observaciones`, [], (tx, results) => {
         console.log("results", results);
         if (results.rows.length > 0) {
-          setZonas(results.rows._array);
+          setObservaciones(results.rows._array);
         } else {
           Alert.alert(
             "Mensaje",
-            "No hay zonas!!!",
+            "No hay Observaciones!!!",
             [
               {
                 text: "Ok",
-                onPress: () => navigation.navigate("HomeScreen"),
+                onPress: () => navigation.navigate("ABMObservaciones"),
               },
             ],
             { cancelable: false }
@@ -36,14 +37,12 @@ const VerTodasLasZonas = () => {
   const listItemView = (item) => {
     return (
       <View key={item.id} style={styles.listItemView}>
-        <MyText textValue="Nombre de lugar" textStyle={styles.textStyle} />
-        <MyText textValue={item.lugar} textStyle={styles.textStyle} />
-
-        <MyText textValue="Departamento" textStyle={styles.textStyle} />
-        <MyText textValue={item.departamento.toString()} textStyle={styles.textStyle} />
-
-        <MyText textValue="N° trabajadores" textStyle={styles.textStyle} />
-        <MyText textValue={item.numTrabajadores} textStyle={styles.textStyle} />
+        <MyText textValue="id Observacion" textStyle={styles.textStyle} />
+        <MyText textValue={item.idObservacion} textStyle={styles.textStyle} />
+        <MyText textValue="Titulo de la Observacion" textStyle={styles.textStyle} />
+        <MyText textValue={item.titulo} textStyle={styles.textStyle} />
+        <MyText textValue="Imagen de la Observacion" textStyle={styles.textStyle} />
+          {item.imagen !== null && <Image source={{uri: item.imagen}} style= {{width: 100,height:100, margin:10}}/>}
 
         <MyText textValue="Longitud" textStyle={styles.textStyle} />
         <MyText textValue={item.longitud} textStyle={styles.textStyle} />
@@ -60,8 +59,8 @@ const VerTodasLasZonas = () => {
       <View>
         <View>
           <FlatList
-            data={zonas}
-            keyExtractor={(item) => item.idZona.toString()}
+            data={observaciones}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => listItemView(item)}
             contentContainerStyle={{ paddingHorizontal: 15 }}
           />
@@ -71,7 +70,7 @@ const VerTodasLasZonas = () => {
   );
 };
 
-export default VerTodasLasZonas;
+export default VerTodasLasObservaciones;
 
 const styles = StyleSheet.create({
   container: {

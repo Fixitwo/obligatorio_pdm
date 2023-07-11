@@ -6,21 +6,25 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Alert,
-  Text
+  Text,
+  Image
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import MyText from "../../components/MyText";
 import MyInputText from "../../components/MyInputText";
 import MySingleButton from "../../components/MySingleButton";
 import { useNavigation } from "@react-navigation/native";
 import DatabaseConnection from "../../database/db-connection";
+import ImagenPicker from "../../components/SelectorImagen";
 
 const db = DatabaseConnection.getConnection();
 
 const EditObservacion = (UbicacionMapa) => {
   // estados
-  const [tituloSearch, setTituloSearch] = useState("");
+  const [idSearch, setIdSearch] = useState("");
+  const [id, setId]= useState("");
   const [titulo, setTitulo] = useState("");
-  const [imagen, setImagen] = useState("");
+  const [imagen, setImagen] = useState(null);
 
   const navigation = useNavigation();
   const rut = UbicacionMapa.route.params;
@@ -34,13 +38,16 @@ const EditObservacion = (UbicacionMapa) => {
     setLongitud(rut?.long)
   },[UbicacionMapa])
   // metodo para setear los estados
-  const handleTituloSearch = (Titulo) => {
-    console.log("### handleTituloSearch ###", Titulo);
-    setTituloSearch(Titulo);
+  const handleIdSearch = (id) => {
+    console.log("### handleTituloSearch ###", id);
+    setIdSearch(id);
   };
 
-  const handleLugar = (titulo) => {
-    setLugar(titulo);
+  const handleId = (id) => {
+    setId(id);
+  };
+  const handleTitulo = (titulo) => {
+    setTitulo(titulo);
   };
 
   const handleImagen = (imagen) => {
@@ -56,18 +63,14 @@ const EditObservacion = (UbicacionMapa) => {
   };
   // metodo validar datos
   const validateData = () => {
-    if (!lugar && !lugar.length && lugar === "" && !lugar.trim()) {
-      Alert.alert("Error", "El nombre del lugar es obligatorio");
+
+    if (!titulo && !titulo.length && titulo === "" && !titulo.trim()) {
+      Alert.alert("Error", "El titulo de la observacion es obligatoria");
       return false;
     }
 
-    if (!departamento && !departamento.length && departamento === "" && !departamento.trim()) {
-      Alert.alert("Error", "El departamento es obligatoria");
-      return false;
-    }
-
-    if (!trabajador && !trabajador.length && !trabajador.trim()) {
-      Alert.alert("Error", "El N° de trabajadores es obligatorio");
+    if (!imagen && !imagen.length && imagen === "" && !imagen.trim()) {
+      Alert.alert("Error", "El la imagen es obligatoria");
       return false;
     }
 
@@ -76,22 +79,23 @@ const EditObservacion = (UbicacionMapa) => {
         return false;
     }
       
-    if (!trabajador && !trabajador.length && !trabajador.trim()) {
+    if (!latitud && !latitud.length && !latitud.trim()) {
         Alert.alert("Error", "La latitud es obligatorio");
         return false;
       }
     return true;
   };
 
-  const clearZonaSearch = () => {
-    setLugarSearch("");
+  const clearObservacionSearch = () => {
+    setIdSearch("");
   }
 
   //  clear de los datos
   const clearData = () => {
-    setLugar("");
-    setDepartamento("");
-    setTrabajador("");
+    clearObservacionSearch(); 
+    setId("");
+    setTitulo("");
+    setImagen("");
     setLongitud("");
     setLatitud("");
   };
@@ -100,22 +104,22 @@ const EditObservacion = (UbicacionMapa) => {
     if (validateData()) {
       db.transaction((tx) => {
         tx.executeSql(
-          "UPDATE zonas set lugar=?, departamento=?, numTrabajadores=?, longitud=?, latitud=? WHERE lugar=?",
-          [lugar, departamento, trabajador, longitud, latitud, lugarSearch],
+          "UPDATE observaciones set titulo=?, imagen=?, longitud=?, latitud=? WHERE idObservacion=?",
+          [titulo, imagen, longitud, latitud, idSearch],
           (_, results) => {
             if (results.rowsAffected > 0) {
               clearData();
-              Alert.alert("Exito", "Zona actualizada correctamente", [
+              Alert.alert("Exito", "Observacion actualizada correctamente", [
                 {
                  
-                  onPress: () => navigation.navigate("HomeScreen"),
+                  onPress: () => navigation.navigate("ABMObservaciones"),
                 },
                 {
                   cancelable: false,
                 }
               ]);
             } else {
-              Alert.alert("Error", "Error al actualizar la zona");
+              Alert.alert("Error", "Error al actualizar la observacion");
             }
           }
         )
@@ -123,31 +127,29 @@ const EditObservacion = (UbicacionMapa) => {
     }
   };
 
-  const searchLugar = () => {
-    if(!lugarSearch.trim() && lugarSearch === ""){
-      Alert.alert("Error", "El nombre del lugar es requerido");
+  const searchObservacion = () => {
+    if(!idSearch.trim() && idSearch === ""){
+      Alert.alert("Error", "El id de la observacion es requerida");
       return;
     }
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM zonas WHERE lugar = ?",
-        [lugarSearch],
+        "SELECT * FROM observaciones WHERE idObservacion = ?",
+        [idSearch],
         (_, results) => {
           if(results.rows.length > 0) {
-            const zona = results.rows.item(0);
-            setLugar(zona.lugar);
-            setDepartamento(zona.departamento);
-            setTrabajador(zona.numTrabajadores);
-            setLongitud(zona.longitud);
-            setLatitud(zona.latitud);
+            const observacion = results.rows.item(0);
+            setTitulo(observacion.titulo);
+            setImagen(observacion.imagen);
+            setLongitud(observacion.longitud);
+            setLatitud(observacion.latitud);
           }else {
-            Alert.alert("Error", "Zona no encontrada");
-            clearZonaSearch();
+            Alert.alert("Error", "Observacion no encontrada");
+            clearObservacionSearch();
           }
         }
       )
     });
-
   };
 
   return (
@@ -156,43 +158,48 @@ const EditObservacion = (UbicacionMapa) => {
         <View style={styles.generalView}>
           <ScrollView>
             <KeyboardAvoidingView style={styles.keyboardView}>
-              <MyText textValue="Buscar zona" textStyle={styles.textStyle} />
+              <MyText textValue="Buscar Observacion" textStyle={styles.textStyle} />
               <MyInputText
-                placeholder="Ingrese el nombre del lugar"
-                onChangeText={handleLugarSearch}
+                placeholder="Ingrese Id"
+                onChangeText={handleIdSearch}
                 styles={styles.input}
-                value={lugarSearch}
+                value={idSearch}
               />
               <MySingleButton 
                 title="Buscar" 
-                onPress={searchLugar} 
+                onPress={searchObservacion} 
                 btnColor='green'
               />
 
-            <MyInputText 
-              placeholder="Nombre del lugar"
-              value={lugar}
-              onChangeText={handleLugar}
-              />
+                <View style={styles.containerPicker}>
+                <Picker
+                  placeholder="Titulo"
+                  selectedValue={titulo}
+                  style={{ maxLength: 40, minLength: 0 }}
+                  onValueChange={(itemValue) => handleTitulo(itemValue)}
+                  prompt="Titulo"
+                >
+                  <Picker.Item label="Plaga Detectada" value="Plaga Detectada" />
+                  <Picker.Item label=" Planta en mal estado" value=" Planta en mal estado" />
+                  <Picker.Item label="Falta de riego" value="Falta de riego" />
 
-            <MyInputText 
-              placeholder="Departamento"
-              value={departamento.toString()}
-              onChangeText={handleDepartamento}
-            />
+                </Picker>
+              </View>
+              <ImagenPicker callback = {handleImagen}/>
+                {console.log("#####Imagen",imagen)}
+                {imagen !== null && <Image source={{uri: imagen}} style= {{width: 100,height:100, marginLeft:155, marginTop:10}}/>}
 
-            <MyInputText 
-              placeholder="N° trabajadores"
-              value={trabajador.toString()}
-              onChangeText={handleTrabajador}
-            />
             <MySingleButton
                 title="Seleccionar ubicación"
                 btnColor="green"
-                onPress={() => navigation.navigate("MapaZona", {cameFrom:"ModificarZona"})}
+                onPress={() => navigation.navigate("MapaZona", {cameFrom:"ModificarObservacion"})}
             />
-             {
-                <Text style={styles.TextUbicacion}>{latitud +' '+longitud}</Text>
+              {
+                //comprueba si la longitud o latitud no esta definida y muestra un texto para que ingrese una Ubicacion
+                //en el caso de que ya exista ubicacion mustra la latitud y longitud
+                latitud == undefined && longitud == undefined 
+                ?<Text style={styles.TextUbicacion}>Por favor seleccione Ubicacion</Text>
+                :<Text style={styles.TextUbicacion}>{latitud +' '+longitud}</Text>
               }
 
             <MySingleButton 
@@ -214,6 +221,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerPicker: {
+    flex: 1,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 10,
+    marginBottom: 10,
+    borderColor: "#d3d3d3",
+    borderWidth: 1,
+    padding: 10,
+  },
   viewContainer: {
     flex: 1,
     backgroundColor: "white",
@@ -232,5 +249,10 @@ const styles = StyleSheet.create({
   keyboardView: {
     flex: 1,
     justifyContent: "space-between",
+  },
+  TextUbicacion:{
+    color:'black',
+    display:'flex',
+    marginLeft:30
   }
 });

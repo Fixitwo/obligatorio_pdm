@@ -37,7 +37,7 @@ const ABMObservaciones = ({ navigation }) => {
                 title="Modificar Observacion"
                 btnColor="orange"
                 btnIcon="user-circle"
-                onPress={() => navigation.navigate("ModificarOservacion")}
+                onPress={() => navigation.navigate("ModificarObservacion")}
               />
 
               <MyButton
@@ -46,14 +46,6 @@ const ABMObservaciones = ({ navigation }) => {
                 btnIcon="user-times"
                 onPress={() => navigation.navigate("BajaObservacion")}
               />
-
-              <MyButton
-                title="Ver Observacion"
-                btnColor="blue"
-                btnIcon="user-circle-o"
-                onPress={() => navigation.navigate("VerObservacion")}
-              />
-
               <MyButton
                 title="Ver todas las observaciones"
                 btnColor="purple"
