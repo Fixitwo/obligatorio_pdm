@@ -106,16 +106,17 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const createDbTratamiento =async (tx) => {
-    try{
+ const createDbTratamiento = async (tx) => {
+  try {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS tratamientos (idTratamiento INTEGER PRIMARY KEY, nomTratamiento VARCHAR(50), zonaTratamiento INTEGER REFERENCES zonas(idZona), usuarioTratamiento INTEGER REFERENCES usuarios(idUsuario), fechaInicio DATE, fechaFin DATE, tiempo INTEGER, insumoTratamiento INTEGER REFERENCES insumos(idInsumo), observacionesTratamiento INTEGER REFERENCES observaciones(idObservacion)", [],
+      "CREATE TABLE IF NOT EXISTS tratamientos (idTratamiento INTEGER PRIMARY KEY, nomTratamiento VARCHAR(50), zonaTratamiento INTEGER, usuarioTratamiento INTEGER, fechaInicio DATETIME, fechaFin DATETIME, tiempo INTEGER, orden VARCHAR(300), insumoTratamiento INTEGER, observacionesTratamiento INTEGER)",
+      []
     );
-    }
-    catch (e){
-        console.log("Error al crear la tabla tratamientos", e);
-    }
-  };
+  } catch (e) {
+    console.log("Error al crear la tabla tratamientos", e);
+  }
+};
+
   
   useEffect(() => {
     db.transaction((txn) => {
@@ -128,9 +129,6 @@ const HomeScreen = ({ navigation }) => {
             console.log("Creo usuario");
           } else {
             console.log("Table already exists");
-            // TODO: Descomentar si quieres volver a borrar y recrear la tabla
-            dropDbUsuario(txn);
-            createDbUsuario(txn);
           }
         },
       );
@@ -149,8 +147,7 @@ const HomeScreen = ({ navigation }) => {
           } else {
             console.log("Table already exists");
             // TODO: Descomentar si quieres volver a borrar y recrear la tabla
-            dropDbZona(txn);
-            createDbZona(txn);
+
           }
         },
       );
@@ -168,9 +165,7 @@ const HomeScreen = ({ navigation }) => {
             console.log("Creo Insumo");
           } else {
             console.log("Table already exists");
-            // TODO: Descomentar si quieres volver a borrar y recrear la tabla
-            dropDbInsumo(txn);
-            createDbInsumo(txn);
+
           }
         },
       );
@@ -187,10 +182,7 @@ const HomeScreen = ({ navigation }) => {
             createDbObservacion(txn);
             console.log("Creo Observacion");
           } else {
-            console.log("Table already exists");
-            // TODO: Descomentar si quieres volver a borrar y recrear la tabla
-            dropDbObservacion(txn);
-            createDbObservacion(txn);
+
           }
         },
       );
@@ -209,8 +201,6 @@ const HomeScreen = ({ navigation }) => {
           } else {
             console.log("Table already exists");
             // TODO: Descomentar si quieres volver a borrar y recrear la tabla
-            dropDbTratamiento(txn);
-            createDbTratamiento(txn);
           }
         },
       );

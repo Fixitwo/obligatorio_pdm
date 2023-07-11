@@ -73,7 +73,7 @@ const AddZona = (UbicacionMapa) => {
                 [
                   {
                     text: "Ok",
-                    onPress: () => navigation.navigate("ABMZonas"),
+                    onPress: () => navigation.navigate("VerTodasLasZonas"),
                   },
                 ],
                 {

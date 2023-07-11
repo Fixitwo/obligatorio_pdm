@@ -50,7 +50,7 @@ const AddInsumo = () => {
               Alert.alert("Exito", "Insumo registrado correctamente", [
                 {
                   text: "Ok",
-                  onPress: () => navigation.navigate("ABMInsumos"),
+                  onPress: () => navigation.navigate("VerTodosLosInsumos"),
                 }
               ],
               {

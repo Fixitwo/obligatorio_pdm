@@ -69,7 +69,7 @@ const AddObservacion = (UbicacionMapa) => {
               Alert.alert("Exito", "Observacion registrada correctamente", [
                 {
                   text: "Ok",
-                  onPress: () => navigation.navigate("ABMObservaciones"),
+                  onPress: () => navigation.navigate("VerTodasLasObservaciones"),
                 }
               ],
               {
@@ -154,7 +154,7 @@ const AddObservacion = (UbicacionMapa) => {
                 
                 <ImagenPicker callback = {handleImagen}/>
                 {console.log("#####Imagen",imagen)}
-                {imagen !== null && <Image source={{uri: imagen}} style= {{width: 100,height:100, marginLeft:155, marginTop:10}}/>}
+                {imagen !== null && <Image source={imagen ? {uri: imagen } : null} style= {{width: 100,height:100, marginLeft:155, marginTop:10}}/>}
               
               <MySingleButton
                 title="Registrar Observacion"

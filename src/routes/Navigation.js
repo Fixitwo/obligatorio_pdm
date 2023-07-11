@@ -35,7 +35,8 @@ import VerTodasLasObservaciones from "../screens/Observaciones/VerTodasLasObserv
 
 import ABMTratamientos from "../screens/ABMTratamientos"
 import AñadirTratamiento from "../screens/Tratamientos/AltaTratamiento";
-
+import VerTodosLosTratamientos from "../screens/Tratamientos/VerTodosLosTratamientos";
+import BajaTratamiento from "../screens/Tratamientos/BajaTratamiento";
 const Navigation = () => {
   return (
     <NavigationContainer>
@@ -427,6 +428,34 @@ const Navigation = () => {
           component={AñadirTratamiento}
           options={{
             title: "Alta Tratamiento",
+            headerStyle: {
+              backgroundColor: "#00C14A",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="BajaTratamiento"
+          component={BajaTratamiento}
+          options={{
+            title: "Baja Tratamiento",
+            headerStyle: {
+              backgroundColor: "#00C14A",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="VerTodosLosTratamientos"
+          component={VerTodosLosTratamientos}
+          options={{
+            title: "Ver Todos los Tratamientos",
             headerStyle: {
               backgroundColor: "#00C14A",
             },

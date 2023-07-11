@@ -8,20 +8,20 @@ import MySingleButton from '../../components/MySingleButton';
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 
-const DeleteUser = () => {
-  const [ciTratamiento, setCiTratamiento] = useState("");
+const BajaTratamiento = () => {
+  const [idTratamiento, setIdTratamiento] = useState("");
   const navigation = useNavigation();
 
-  const deleteUser = () => {
-    if(!ciTratamiento && !ciTratamiento.length && ciTratamiento === ""){
-      Alert.alert("Error", "Debe ingresar una cédula de identidad");
+  const bajaTratamiento = () => {
+    if(!idTratamiento && !idTratamiento.length && idTratamiento === ""){
+      Alert.alert("Error", "Debe ingresar una identificador");
       return false;
     }
 
     db.transaction((tx) => {
       tx.executeSql(
-        'DELETE FROM tratamientos WHERE cedula = ?',
-        [ciTratamiento],
+        'DELETE FROM tratamientos WHERE idTratamiento = ?',
+        [idTratamiento],
         (tx, results) => {
           console.log("Results", results.rowsAffected);
           if(results.rowsAffected > 0){
@@ -52,8 +52,8 @@ const DeleteUser = () => {
 
   }
 
-  const handleCiTratamiento = (ciTratamiento) => {
-    setCiTratamiento(ciTratamiento);
+  const handleIdTratamiento = (idTratamiento) => {
+    setIdTratamiento(idTratamiento);
   }
 
   return (
@@ -64,15 +64,15 @@ const DeleteUser = () => {
             <MyText textValue="Busqueda de Tratamiento" textStyle={styles.textStyle}/>
             <KeyboardAvoidingView>
               <MyInputText
-                placeholder="Cédula de identidad"
-                onChangeText={handleCiTratamiento}
-                value={ciTratamiento}
+                placeholder="Id de tratamiento"
+                onChangeText={handleIdTratamiento}
+                value={idTratamiento}
                 styles={styles.inputStyle}
                 keyboardType='numeric'
               />
               <MySingleButton
                 title="Borrar"
-                onPress={deleteUser}
+                onPress={bajaTratamiento}
               />
             </KeyboardAvoidingView>
           </ScrollView>
@@ -82,7 +82,7 @@ const DeleteUser = () => {
   )
 }
 
-export default DeleteUser
+export default BajaTratamiento
 
 const styles = StyleSheet.create({
   container: {

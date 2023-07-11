@@ -52,11 +52,11 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
   const handleUsuario = (usuario) => {
     setUsuario(usuario);
   };
-  const handleFechaInicio= (fechaInicio) => {
+  const handleFechaInicio = (fechaInicio) => {
     setFechaInicio(fechaInicio);
   };
 
-  const handleFechaFin= (fechaFin) => {
+  const handleFechaFin = (fechaFin) => {
     setFechaFin(fechaFin);
   };
 
@@ -80,42 +80,49 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
     // llamar al metodo de guardar
     if (validateData()) {
       // llamar a la db y guarar los datos
-      db.transaction((tx) => {
-        tx.executeSql(
-          "INSERT INTO tratamientos(idTratamiento, nomTratamiento, zonaTratamiento,usuarioTratamiento, fechaInicio, fechaFin, tiempo, insumoTratamiento, observacionesTratamiento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          [
-            id,
-            nombre,
-            zona,
-            usuario,
-            fechaInicio,
-            fechaFin,
-            tiempo,
-            insumo,
-            observacion,
-          ],
-          (tx, results) => {
-            if (results.rowsAffected > 0) {
-              Alert.alert(
-                "Exito",
-                "Tratamiento registrado correctamente",
-                [
+      try {
+        db.transaction((tx) => {
+          tx.executeSql(
+            "INSERT INTO tratamientos(idTratamiento, nomTratamiento, zonaTratamiento,usuarioTratamiento, fechaInicio, fechaFin, tiempo, orden, insumoTratamiento, observacionesTratamiento) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+              id,
+              nombre,
+              zona,
+              usuario,
+              fechaInicio,
+              fechaFin,
+              tiempo,
+              orden,
+              insumo,
+              observacion,
+            ],
+            (tx, results) => {
+              console.log(results);
+              if (results.rowsAffected > 0) {
+                Alert.alert(
+                  "Exito",
+                  "Tratamiento registrado correctamente",
+                  [
+                    {
+                      text: "Ok",
+                      onPress: () =>
+                        navigation.navigate("VerTodosLosTratamientos"),
+                    },
+                  ],
                   {
-                    text: "Ok",
-                    onPress: () => navigation.navigate("ABMTratamientos"),
-                  },
-                ],
-                {
-                  cancelable: false,
-                }
-              );
-              clearData();
-            } else {
-              Alert.alert("Error", "Error al registrar el tratamiento");
+                    cancelable: false,
+                  }
+                );
+                clearData();
+              } else {
+                Alert.alert("Error", "Error al registrar el tratamiento");
+              }
             }
-          }
-        );
-      });
+          );
+        });
+      } catch (error) {
+        console.error("Error en la consulta:", error);
+      }
     }
   };
 
@@ -228,7 +235,7 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
               </View>
               <View style={styles.containerPicker}>
                 <Picker
-                  placeholder="Insumo"  
+                  placeholder="Insumo"
                   selectedValue={insumo}
                   style={{ maxLength: 40, minLength: 0 }}
                   onValueChange={(itemValue) => handleInsumo(itemValue)}
@@ -245,7 +252,7 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
               </View>
               <View style={styles.containerPicker}>
                 <Picker
-                  placeholder="Observacion"  
+                  placeholder="Observacion"
                   selectedValue={observacion}
                   style={{ maxLength: 40, minLength: 0 }}
                   onValueChange={(itemValue) => handleObservacion(itemValue)}

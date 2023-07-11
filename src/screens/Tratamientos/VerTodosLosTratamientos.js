@@ -5,7 +5,7 @@ import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 import { useNavigation } from "@react-navigation/native";
 
-const ViewAllUsers = () => {
+const VerTodosLosTratamientos = () => {
   // definir un estado local, para guardar los tratamientos
   const [users, setUsers] = useState([]);
   const navigation = useNavigation();
@@ -35,12 +35,22 @@ const ViewAllUsers = () => {
 
   const listItemView = (item) => {
     return (
-      <View key={item.id} style={styles.listItemView}>
+      <View key={item.idTratamiento} style={styles.listItemView}>
         <MyText textValue="Nombre" textStyle={styles.textStyle} />
-        <MyText textValue={item.nombre +" "+ item.apellido} textStyle={styles.textStyle} />
+        <MyText textValue={item.nomTratamiento} textStyle={styles.textStyle} />
 
-        <MyText textValue="Cédula de identidad" textStyle={styles.textStyle} />
-        <MyText textValue={item.cedula} textStyle={styles.textStyle} />
+        <MyText textValue="Id de zona" textStyle={styles.textStyle} />
+        <MyText textValue={item.zonaTratamiento} textStyle={styles.textStyle} />
+
+        <MyText textValue="Fecha de inicio" textStyle={styles.textStyle} />
+        <MyText textValue={item.fechaInicio} textStyle={styles.textStyle} />
+
+        <MyText textValue="Fecha de fin" textStyle={styles.textStyle} />
+        <MyText textValue={item.fechaFin} textStyle={styles.textStyle} />
+
+        <MyText textValue="Tiempo" textStyle={styles.textStyle} />
+        <MyText textValue={item.tiempo + " horas"} textStyle={styles.textStyle} />
+
       </View>
     );
   };
@@ -51,7 +61,7 @@ const ViewAllUsers = () => {
         <View>
           <FlatList
             data={users}
-            keyExtractor={(item) => item.idUsuario.toString()}
+            keyExtractor={(item) => item.idTratamiento.toString()}
             renderItem={({ item }) => listItemView(item)}
             contentContainerStyle={{ paddingHorizontal: 15 }}
           />
@@ -61,7 +71,7 @@ const ViewAllUsers = () => {
   );
 };
 
-export default ViewAllUsers;
+export default VerTodosLosTratamientos;
 
 const styles = StyleSheet.create({
   container: {

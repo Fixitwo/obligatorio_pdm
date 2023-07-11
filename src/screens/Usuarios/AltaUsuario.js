@@ -51,7 +51,7 @@ const AñadirUsuario = () => {
                 Alert.alert("Exito", "Usuario registrado correctamente", [
                   {
                     text: "Ok",
-                    onPress: () => navigation.navigate("ABMUsuarios"),
+                    onPress: () => navigation.navigate("VerTodosLosUsuarios"),
                   }
                 ],
                 {

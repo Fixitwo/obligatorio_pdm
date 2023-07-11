@@ -32,26 +32,11 @@ const ABMTratamientos = ({ navigation }) => {
                 btnIcon="user-plus"
                 onPress={() => navigation.navigate("AltaTratamiento", {})}
               />
-
-              <MyButton
-                title="Modificar Tratamiento"
-                btnColor="orange"
-                btnIcon="user-circle"
-                onPress={() => navigation.navigate("ModificarObservacion")}
-              />
-
               <MyButton
                 title="Baja Tratamiento"
                 btnColor="red"
                 btnIcon="user-times"
                 onPress={() => navigation.navigate("BajaTratamiento")}
-              />
-
-              <MyButton
-                title="Ver Tratamiento"
-                btnColor="blue"
-                btnIcon="user-circle-o"
-                onPress={() => navigation.navigate("VerTratamiento")}
               />
 
               <MyButton
