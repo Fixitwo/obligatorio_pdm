@@ -17,6 +17,8 @@ import FilePicker from "../../components/SelectorDocumentos";
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../../../AppContext";
+import MySingleButton from "../../components/MySingleButton";
+
 const db = DatabaseConnection.getConnection();
 
 const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
@@ -30,7 +32,7 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
   const [tiempo, setTiempo] = useState("");
   const [orden, setOrden] = useState(null);
   const [insumo, setInsumo] = useState("");
-  const [observaciones, setObservaciones] = useState("");
+  const [observacion, setObservacion] = useState("");
 
   const { listaUsuarios, listaZonas, listaInsumos, listaObservaciones } =
     useContext(AppContext);
@@ -67,8 +69,8 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
   const handleInsumo = (insumo) => {
     setInsumo(insumo);
   };
-  const handleObservaciones = (observaciones) => {
-    setObservaciones(observaciones);
+  const handleObservacion = (observacion) => {
+    setObservacion(observacion);
   };
 
   // metodo guarde el formulario
@@ -90,7 +92,7 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
             fechaFin,
             tiempo,
             insumo,
-            observaciones,
+            observacion,
           ],
           (tx, results) => {
             if (results.rowsAffected > 0) {
@@ -151,7 +153,7 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
       Alert.alert("Error", "El insumo es obligatorio");
       return false;
     }
-    if (observaciones == undefined) {
+    if (observacion == undefined) {
       Alert.alert("Error", "Las observaciones son obligatorias");
       return false;
     }
@@ -169,7 +171,7 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
     setFechaFin("");
     setTiempo("");
     setInsumo("");
-    setObservaciones("");
+    setObservacion("");
   };
   // Formulario de registro de tratamiento
   return (
@@ -224,6 +226,40 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
                   ))}
                 </Picker>
               </View>
+              <View style={styles.containerPicker}>
+                <Picker
+                  placeholder="Insumo"  
+                  selectedValue={insumo}
+                  style={{ maxLength: 40, minLength: 0 }}
+                  onValueChange={(itemValue) => handleInsumo(itemValue)}
+                >
+                  <Picker.Item label="Seleccione un insumo" value="" />
+                  {listaInsumos.map((insumo) => (
+                    <Picker.Item
+                      key={insumo.idInsumo}
+                      label={insumo.nomIns}
+                      value={insumo.idInsumo}
+                    />
+                  ))}
+                </Picker>
+              </View>
+              <View style={styles.containerPicker}>
+                <Picker
+                  placeholder="Observacion"  
+                  selectedValue={observacion}
+                  style={{ maxLength: 40, minLength: 0 }}
+                  onValueChange={(itemValue) => handleObservacion(itemValue)}
+                >
+                  <Picker.Item label="Seleccione una observación" value="" />
+                  {listaObservaciones.map((observacion) => (
+                    <Picker.Item
+                      key={observacion.idObservacion}
+                      label={observacion.titulo}
+                      value={observacion.idObservacion}
+                    />
+                  ))}
+                </Picker>
+              </View>
               <TextInputMask
                 type={"datetime"}
                 customTextInput={MyInputText}
@@ -254,23 +290,11 @@ const AñadirTratamiento = (Zonas, Usuarios, Insumos, Observaciones) => {
               <View style={styles.inputDate}>
                 <FilePicker callback={handleOrden} />
               </View>
-              <View style={styles.containerPicker}>
-                <Picker
-                  placeholder="Insumo"
-                  selectedValue={insumo}
-                  style={{ maxLength: 40, minLength: 0 }}
-                  onValueChange={(itemValue) => handleInsumo(itemValue)}
-                >
-                  <Picker.Item label="Seleccione un insumo" value="" />
-                  {listaInsumos.map((insumo) => (
-                    <Picker.Item
-                      key={insumo.idInsumo}
-                      label={insumo.nomIns}
-                      value={insumo.idInsumo}
-                    />
-                  ))}
-                </Picker>
-              </View>
+              <MySingleButton
+                title="Registrar Tratamiento"
+                btnColor="green"
+                onPress={añadirTratamiento}
+              />
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
