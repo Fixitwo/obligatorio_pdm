@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, SafeAreaView, FlatList, Alert, Image } from "react-native";
 import MyText from "../../components/MyText";
 import DatabaseConnection from "../../database/db-connection";
 const db = DatabaseConnection.getConnection();
 import { useNavigation } from "@react-navigation/native";
-import ImagenPicker from "../../components/SelectorImagen";
+import { AppContext } from "../../../AppContext";
+
 
 const VerTodasLasObservaciones = () => {
+  //Libera la variable globalmente para que se pueda acceder desde otras pantallas.
+  const{listaObservaciones, setListaObservaciones} = useContext(AppContext)
   // definir un estado local, para guardar los usuarios
   const [observaciones, setObservaciones] = useState([]);
   const navigation = useNavigation();
@@ -16,6 +19,7 @@ const VerTodasLasObservaciones = () => {
       tx.executeSql(`SELECT * FROM observaciones`, [], (tx, results) => {
         console.log("results", results);
         if (results.rows.length > 0) {
+          setListaObservaciones(results.rows._array);
           setObservaciones(results.rows._array);
         } else {
           Alert.alert(
